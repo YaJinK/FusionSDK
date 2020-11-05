@@ -1,0 +1,5 @@
+<resources>
+    <string name="channel_id">2</string>
+    <string name="channel_name">Tencent</string>
+    <string name="sdk_lifecycle_name">com.magata.tencentsdk.ActivityLifeCycle</string>
+</resources>

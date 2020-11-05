@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application >
+        <meta-data
+            android:name="com.magata.vivosdk.appid"
+            android:value="appid=7c7e5d4d878d8da7c8f262bec0c95b95">
+        </meta-data>
+       
+    </application>
+</manifest>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application >
+        <meta-data
+            android:name="com.magata.meizusdk.appid"
+            android:value="appid=3215802">
+        </meta-data>
+
+        <meta-data
+            android:name="com.magata.meizusdk.appkey"
+            android:value="appkey=031aec80b9c14f7e9b7fa4f49f948bbe">
+        </meta-data>
+    </application>
+</manifest>

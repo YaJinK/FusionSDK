@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sdk_lifecycle_name">com.magata.meizusdk.MeiZuLifeCycle</string>
+    <string name="application_name">com.magata.meizusdk.MeiZuApplication</string>
+    <string name="channel_id">9</string>
+    <string name="channel_name">MeiZu</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="channel_id">5</string>
+    <string name="channel_name">Mi</string>
+    <string name="application_name">com.magata.misdk.MiApplication</string>
+    <string name="sdk_lifecycle_name">com.magata.misdk.ActivityLifeCycle</string>
+</resources>

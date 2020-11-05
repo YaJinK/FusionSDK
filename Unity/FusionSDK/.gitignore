@@ -1,0 +1,10 @@
+﻿Library/
+Temp/
+ProjectSettings/
+UnityPackageManager/
+Assets/Plugins/
+Assets/Plugins.meta
+FusionSDK.csproj
+FusionSDK.Editor.csproj
+FusionSDK.sln
+.vs/

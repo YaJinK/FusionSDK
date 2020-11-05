@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application >
+        <meta-data
+            android:name="com.magata.misdk.appid"
+            android:value="appid=2882303761517853433">
+        </meta-data>
+
+        <meta-data
+            android:name="com.magata.misdk.appkey"
+            android:value="appkey=5241785363433">
+        </meta-data>
+    </application>
+</manifest>

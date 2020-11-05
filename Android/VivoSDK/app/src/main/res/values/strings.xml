@@ -1,0 +1,5 @@
+<resources>
+    <string name="channel_id">8</string>
+    <string name="channel_name">Vivo</string>
+    <string name="application_name">com.magata.vivosdk.VivoApplication</string>
+</resources>

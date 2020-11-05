@@ -1,0 +1,7 @@
+<resources>
+    <string name="channel_id">3</string>
+    <string name="channel_name">HuaWei</string>
+    <string name="sdk_lifecycle_name">com.magata.huaweisdk.HuaWeiLifeCycle</string>
+    <string name="application_name">com.magata.huaweisdk.HuaWeiApplication</string>
+
+</resources>

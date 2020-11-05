@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application >
+      <!-- android:taskAffinity 填上游戏的包名，如游戏包名为cn.uc.gamesdk.demo，则下面填 cn.uc.gamesdk.demo.diff -->
+      <!-- data android:scheme 里填上”ag+当前游戏的gameId”,如游戏ID是123456,则填上ag123456 -->
+      <activity
+          android:name="cn.uc.gamesdk.activity.PullupActivity"
+          android:excludeFromRecents="true"
+          android:exported="true"
+          android:label="PullupActivity"
+          android:launchMode="singleTop"
+          android:taskAffinity="${applicationId}.diff"
+          android:theme="@android:style/Theme.Translucent" >
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+
+          <data android:scheme="ng#[appId]" />
+        </intent-filter>
+      </activity>
+
+      <meta-data
+            android:name="com.magata.ucsdk.debugmode"
+            android:value="#[debugMode]">
+      </meta-data>
+      <meta-data
+            android:name="com.magata.ucsdk.gameid"
+            android:value="#[appId]">
+      </meta-data>
+      <meta-data
+            android:name="com.magata.ucsdk.enablepayhistory"
+            android:value="#[enablePayHistory]">
+      </meta-data>
+      <meta-data
+            android:name="com.magata.ucsdk.enableuserchange"
+            android:value="#[enableUserChange]">
+      </meta-data>
+      <meta-data
+            android:name="com.magata.ucsdk.orientation"
+            android:value="#[orientation]">
+      </meta-data>
+      <!-- 0 竖屏  1 横屏 -->
+
+    </application>
+</manifest>

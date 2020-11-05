@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application >
+        <meta-data
+            android:name="com.magata.tencentsdk.isuseyyb"
+            android:value="false">  <!-->是否使用应用宝更新<-->
+        </meta-data>
+
+         <!-- TODO GAME SDK QQ接入配置 START -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1106179069" />
+                <!-- TODO GAME 这里为游戏QQ登录的配置，游戏需要修改为自己手Q的appid -->
+            </intent-filter>
+        </activity>
+
+        <!-- TODO GAME SDK 微信接入配置 START -->
+        <activity
+            android:name="com.magata.tencentsdk.wxapi.WXEntryActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="WXEntryActivity"
+            android:launchMode="singleTop"
+            android:taskAffinity="${applicationId}.diff"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wx8b94dd2637fcb7ad" />
+                <!-- TODO GAME 这里为游戏微信登录的配置，游戏需要修改为自己的微信appid -->
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
