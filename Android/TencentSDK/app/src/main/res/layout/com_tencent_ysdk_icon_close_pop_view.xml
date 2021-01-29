@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="256dp"
+    android:layout_height="120dp"
+    android:background="@drawable/com_tencent_ysdk_icon_close_textview"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:text="@string/icon_close_window_title"
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
+    <TextView
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:text="@string/icon_close_window_subtitle"
+        android:textColor="#999999"
+        android:textSize="12sp"/>
+    <LinearLayout
+        android:layout_width="256dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="17dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/com_tencent_ysdk_icon_close_no_more_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:text="@string/icon_close_window_no_more_tips"
+            android:textSize="12sp"
+            android:layout_weight="1.0"
+            android:visibility="invisible"
+            android:button="@drawable/com_tencent_ysdk_icon_close_checkbox"
+            />
+        <TextView
+            android:id="@+id/com_tencent_ysdk_icon_close_still_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_close_window_negative_text"
+            android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+            android:textSize="12sp"
+            android:layout_weight="1.0"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/com_tencent_ysdk_icon_close_not_close"
+            android:layout_width="65dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="12dp"
+            android:text="@string/icon_close_window_positive_text"
+            android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+            android:textSize="12sp"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:background="@drawable/com_tencent_ysdk_icon_close_text_bg"/>
+
+    </LinearLayout>
+
+</LinearLayout>

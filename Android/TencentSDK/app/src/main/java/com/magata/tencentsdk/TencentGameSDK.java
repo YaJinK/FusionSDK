@@ -1,22 +1,21 @@
 package com.magata.tencentsdk;
 
-import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.tencent.tmselfupdatesdk.ITMSelfUpdateListener;
-import com.tencent.tmselfupdatesdk.TMSelfUpdateManager;
-import com.tencent.tmselfupdatesdk.YYBDownloadListener;
-import com.tencent.tmselfupdatesdk.model.TMSelfUpdateUpdateInfo;
 import com.tencent.ysdk.api.YSDKApi;
 import com.tencent.ysdk.framework.common.eFlag;
 import com.tencent.ysdk.framework.common.ePlatform;
 import com.tencent.ysdk.module.pay.PayListener;
 import com.tencent.ysdk.module.pay.PayRet;
+import com.tencent.ysdk.module.user.PersonInfo;
 import com.tencent.ysdk.module.user.UserLoginRet;
+import com.tencent.ysdk.module.user.UserRelationListener;
+import com.tencent.ysdk.module.user.UserRelationRet;
 import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONException;
@@ -25,47 +24,46 @@ import org.json.JSONObject;
 public class TencentGameSDK {
     private static SdkEventReceiver receiver = new SdkEventReceiver();
     private static String TAG = "Tencent";
-    public static boolean isUseYYB = false;
+    public static int ysdkEnv = 1;  // 1代表正式，0代表测试
 
     public static void initSDK(){
-
-        ApplicationInfo info = null;
-        try {
-            info = UnityPlayer.currentActivity.getPackageManager().getApplicationInfo(UnityPlayer.currentActivity.getPackageName(),
-                    PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (null != info) {
-            TencentGameSDK.isUseYYB = info.metaData.getBoolean("com.magata.tencentsdk.isuseyyb");
-        }
-
-        TMSelfUpdateManager.getInstance().init(UnityPlayer.currentActivity.getApplicationContext(), "990483", new ITMSelfUpdateListener() {
-            @Override
-            public void onDownloadAppStateChanged(int i, int i1, String s) {
-            }
-
-            @Override
-            public void onDownloadAppProgressChanged(long l, long l1) {
-            }
-
-            @Override
-            public void onUpdateInfoReceived(TMSelfUpdateUpdateInfo tmSelfUpdateUpdateInfo) {
-            }
-        }, new YYBDownloadListener() {
-            @Override
-            public void onDownloadYYBStateChanged(String s, int i, int i1, String s1) {
-            }
-
-            @Override
-            public void onDownloadYYBProgressChanged(String s, long l, long l1) {
-            }
-
-            @Override
-            public void onCheckDownloadYYBState(String s, int i, long l, long l1) {
-            }
-        }, null);
-        TMSelfUpdateManager.getInstance().startSelfUpdate(TencentGameSDK.isUseYYB);
+//        ApplicationInfo info = null;
+//        try {
+//            info = UnityPlayer.currentActivity.getPackageManager().getApplicationInfo(UnityPlayer.currentActivity.getPackageName(),
+//                    PackageManager.GET_META_DATA);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if (null != info) {
+//            TencentGameSDK.ysdkEnv = info.metaData.getInt("com.magata.tencentsdk.ysdkEnv");
+//        }
+//
+//        TMSelfUpdateManager.getInstance().init(UnityPlayer.currentActivity.getApplicationContext(), "990483", new ITMSelfUpdateListener() {
+//            @Override
+//            public void onDownloadAppStateChanged(int i, int i1, String s) {
+//            }
+//
+//            @Override
+//            public void onDownloadAppProgressChanged(long l, long l1) {
+//            }
+//
+//            @Override
+//            public void onUpdateInfoReceived(TMSelfUpdateUpdateInfo tmSelfUpdateUpdateInfo) {
+//            }
+//        }, new YYBDownloadListener() {
+//            @Override
+//            public void onDownloadYYBStateChanged(String s, int i, int i1, String s1) {
+//            }
+//
+//            @Override
+//            public void onDownloadYYBProgressChanged(String s, long l, long l1) {
+//            }
+//
+//            @Override
+//            public void onCheckDownloadYYBState(String s, int i, long l, long l1) {
+//            }
+//        }, null);
+//        TMSelfUpdateManager.getInstance().startSelfUpdate(TencentGameSDK.isUseYYB);
         receiver.onInitSucc();
     }
 
@@ -88,14 +86,15 @@ public class TencentGameSDK {
         UnityPlayer.currentActivity.startActivity(loginIntent);
     }
 
-    public static void login() {
-        UserLoginRet userLoginRet = new UserLoginRet();
+    public static void getLoginInfo(){
+        final UserLoginRet userLoginRet = new UserLoginRet();
         YSDKApi.getLoginRecord(userLoginRet);
-        JSONObject result = new JSONObject();
+        final JSONObject result = new JSONObject();
         try {
             result.put("openKey", userLoginRet.getAccessToken());
             result.put("openId", userLoginRet.open_id);
             result.put("platform", userLoginRet.platform);
+            result.put("ysdkEnv", TencentGameSDK.ysdkEnv);
             result.put("PayToken", userLoginRet.getPayToken());
             result.put("pfkey", userLoginRet.pf_key);
             result.put("userType", userLoginRet.platform);
@@ -104,7 +103,94 @@ public class TencentGameSDK {
             e.printStackTrace();
         }
         if (eFlag.Succ == userLoginRet.flag){
-            receiver.onLoginSucc(result.toString());
+            YSDKApi.queryUserInfo(ePlatform.getEnum(userLoginRet.platform), new UserRelationListener() {
+                @Override
+                public void OnRelationNotify(UserRelationRet ret) {
+                    YSDKApi.setAntiAddictGameStart();
+                    for (int i=0; i < ret.persons.size(); i++){
+                        PersonInfo pi = (PersonInfo)ret.persons.get(i);
+                        if (userLoginRet.open_id == pi.openId) {
+                            try {
+                                result.put("nickName", pi.nickName);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
+                    }
+                    receiver.onLoginSucc(result.toString());
+                }
+            });
+
+        } else if (eFlag.QQ_NetworkErr == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "网络异常，请检查后重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.QQ_LoginFail == userLoginRet.flag || eFlag.WX_LoginFail == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Log.d(TAG, "getLoginInfo: 登陆失败");
+        } else if (eFlag.QQ_NotInstall  == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "手机未安装手Q，请安装后重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.WX_NotInstall  == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "手机未安装微信，请安装后重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.QQ_UserCancel  == userLoginRet.flag || eFlag.WX_UserCancel  == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "用户取消授权，请重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.QQ_NotSupportApi  == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "手机手Q版本太低，请升级后重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.WX_NotSupportApi  == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "手机微信版本太低，请升级后重试", Toast.LENGTH_SHORT).show();
+        } else if (eFlag.Login_TokenInvalid == userLoginRet.flag) {
+            receiver.onLoginFailed(result.toString());
+        } else if (eFlag.Login_NotRegisterRealName == userLoginRet.flag) {
+            receiver.onLoginFailed("Fail");
+            Toast.makeText(UnityPlayer.currentActivity, "未进行实名认证，请实名后重试", Toast.LENGTH_SHORT).show();
+        }
+        Log.d(TAG, "getLoginInfo");
+        Log.d(TAG, userLoginRet.toString());
+
+
+    }
+
+    public static void login() {
+        final UserLoginRet userLoginRet = new UserLoginRet();
+        YSDKApi.getLoginRecord(userLoginRet);
+        final JSONObject result = new JSONObject();
+        try {
+            result.put("openKey", userLoginRet.getAccessToken());
+            result.put("openId", userLoginRet.open_id);
+            result.put("platform", userLoginRet.platform);
+            result.put("ysdkEnv", TencentGameSDK.ysdkEnv);
+            result.put("PayToken", userLoginRet.getPayToken());
+            result.put("pfkey", userLoginRet.pf_key);
+            result.put("userType", userLoginRet.platform);
+            result.put("pf", userLoginRet.pf);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (eFlag.Succ == userLoginRet.flag){
+            YSDKApi.queryUserInfo(ePlatform.getEnum(userLoginRet.platform), new UserRelationListener() {
+                        @Override
+                        public void OnRelationNotify(UserRelationRet ret) {
+                            YSDKApi.setAntiAddictGameStart();
+                            for (int i=0; i < ret.persons.size(); i++){
+                                PersonInfo pi = (PersonInfo)ret.persons.get(i);
+                                if (userLoginRet.open_id == pi.openId) {
+                                    try {
+                                        result.put("nickName", pi.nickName);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                }
+                            }
+                            receiver.onLoginSucc(result.toString());
+                        }
+                    }
+            );
         } else if (eFlag.QQ_NetworkErr == userLoginRet.flag) {
             receiver.onLoginFailed("网络异常，请检查后重试");
             startLoginActivity();
@@ -141,6 +227,8 @@ public class TencentGameSDK {
             startLoginActivity();
             Toast.makeText(UnityPlayer.currentActivity, "未进行实名认证，请实名后重试", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     public static void pay(String zoneId, String saveValue, boolean isCanChange, byte[] appResData, String ysdkExt) {

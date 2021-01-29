@@ -4,76 +4,85 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- TODO GAME SDK Midas接入配置 设置屏幕兼容声明 START -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- TODO SDK接入必须权限模块 START -->
+    ​
+    <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 获取设备WIFI连接状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取设备位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 允许程序改变Wi-Fi连接状态 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <!-- 获取栈顶的进程 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 网络请求 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 挂载/卸载文件系统 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 获取机型信息和运营商信息 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 允许程序重新启动其他程序 -->
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <!-- 允许一个程序打开窗口使用 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 向SD卡写入文件 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    ​
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
 
     <application>
-        <meta-data
-            android:name="com.tencent.rdm.uuid"
-            android:value="65aa6322-2fa0-4ddc-8745-45cefee048e3" />
-         <!-- TODO GAME SDK接入YSDK登陆接入配置 START -->
+            <meta-data
+                android:name="com.tencent.rdm.uuid"
+                android:value="65aa6322-2fa0-4ddc-8745-45cefee048e3" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+             <!-- TODO GAME SDK接入YSDK登陆接入配置 START -->
         <activity
             android:name="com.tencent.ysdk.module.realName.impl.RegisterRealNameActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity> <!-- TODO GAME SDK接入YSDK登陆接入配置 END -->
 
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- TODO GAME SDK QQ接入配置 END -->
+            <activity
+                android:name="com.tencent.connect.common.AssistActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
          <!-- TODO GAME 1.4.1之后版本支持微信扫码登录，低于此版本升级的YSDK务必增加此处Activity用于二维码展示 -->
-        <activity
-            android:name="com.tencent.ysdk.module.user.impl.wx.qrcode.QRActivity"
-            android:launchMode="singleTask"
-            android:taskAffinity="com.tencent.tmgp.lcs.qr"></activity> <!-- TODO GAME SDK 微信接入配置 END -->
+            <activity android:name="com.tencent.ysdk.module.user.impl.wx.qrcode.QRActivity" />
+
+        <!-- TODO GAME SDK 微信接入配置 END -->
         <!-- TODO GAME SDK Midas接入配置 START -->
         <activity
             android:name="com.tencent.midas.proxyactivity.APMidasPayProxyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name="com.tencent.midas.wx.APMidasWXPayActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true" />
+
         <activity
             android:name="com.tencent.midas.qq.APMidasQQWalletActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="qwallet100703379" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="qwallet100703379"/>
                 <!-- TODO GAME 这里为米大师的默认配置，游戏不要修改 -->
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.tencent.midas.jsbridge.APWebJSBridgeActivity"
+        <activity android:name="com.tencent.midas.jsbridge.APWebJSBridgeActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- TODO GAME SDK Midas接入配置 END -->
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <!-- TODO GAME SDK Midas接入配置 END -->
         <!-- 省流量更新SDK的下载服务须注册 -->
         <service
             android:name="com.tencent.tmdownloader.TMAssistantDownloadService"

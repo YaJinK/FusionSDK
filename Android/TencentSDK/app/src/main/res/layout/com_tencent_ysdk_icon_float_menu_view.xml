@@ -60,4 +60,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:src="@drawable/com_tencent_ysdk_icon_head" />
-</RelativeLayout><!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_icon_float_menu_view.xml -->
+</RelativeLayout>

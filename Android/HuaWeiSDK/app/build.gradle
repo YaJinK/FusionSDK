@@ -20,14 +20,26 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/unity-classes.jar')
-    implementation files('libs/hmssdk-push-2.6.3.301.jar')
-    implementation files('libs/hmssdk-base-2.6.3.301.jar')
-    implementation files('libs/hmssdk-game-2.6.3.301.jar')
-    implementation files('libs/hmssdk-iap-2.6.3.301.jar')
+    implementation files('libs/agconnect-core.jar')
+    implementation files('libs/hmssdk-availableupdate-5.0.5.300.jar')
+    implementation files('libs/hmssdk-base-5.0.5.300.jar')
+    implementation files('libs/hmssdk-device-5.0.5.300.jar')
+    implementation files('libs/hmssdk-hatool-5.0.5.300.jar')
+    implementation files('libs/hmssdk-log-5.0.5.300.jar')
+    implementation files('libs/hmssdk-stats-5.0.5.300.jar')
+    implementation files('libs/hmssdk-ui-5.0.5.300.jar')
+    implementation files('libs/network-common.jar')
+    implementation files('libs/network-grs.jar')
+    implementation files('libs/security-encrypt.jar')
+    implementation files('libs/security-ssl.jar')
+    implementation files('libs/tasks.jar')
+    implementation files('libs/update.jar')
+    implementation files('libs/hmssdk-hwid-5.0.5.300.jar')
+    implementation files('libs/hmssdk-iap-5.0.4.301.jar')
+    implementation files('libs/gameservicesdk-game-5.0.1.302.jar')
 }

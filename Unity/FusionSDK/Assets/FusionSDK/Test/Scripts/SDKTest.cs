@@ -49,6 +49,11 @@ public class SDKTest : MonoBehaviour
         Fusion.GetCertificationInfo();
     }
 
+    public void CheckMissingOrder()
+    {
+        Fusion.CheckMissingOrder();
+    }
+
     public void Exit()
     {
         Fusion.Exit();

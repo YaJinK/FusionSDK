@@ -13,6 +13,6 @@ public class ActivityLifeCycle {
 
     public void onDestory (Activity activity){
         Log.d("XiaomiLC", "onDestory: ");
-        MiCommplatform.getInstance().onMainActivityDestory(activity);
+        MiCommplatform.getInstance().onMainActivityDestory();
     }
 }

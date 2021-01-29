@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -18,24 +18,21 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('libs/alipaySdk-20160825.jar')
-    implementation files('libs/eventbus-3.0.0.jar')
-    implementation files('libs/glide-4.0.0.jar')
-    implementation files('libs/HyZxing_2_1.jar')
-    implementation files('libs/org.apache.http.legacy.jar')
-    implementation files('libs/protobuf-java-2.6.1.jar')
-    implementation files('libs/unity-classes.jar')
-    implementation files('libs/volley-1.0.19.jar')
-    implementation files('libs/mio_sdk_base_3.1.2_12711.jar')
+    implementation files('libs/alipaySdk-20180601.jar')
     implementation files('libs/android.arch.core-common-1.1.0.jar')
     implementation files('libs/android.arch.core-runtime-1.1.0.jar')
     implementation files('libs/android.arch.lifecycle-common-1.1.0.jar')
     implementation files('libs/android.arch.lifecycle-livedata-core-1.1.0.jar')
     implementation files('libs/android.arch.lifecycle-runtime-1.1.0.jar')
     implementation files('libs/android.arch.lifecycle-viewmodel-1.1.0.jar')
+    implementation files('libs/eventbus-3.0.0.jar')
+    implementation files('libs/mio_sdk_base_3.2.2_12770.jar')
+    implementation files('libs/org.apache.http.legacy.jar')
+    implementation files('libs/protobuf-java-2.6.1.jar')
+    implementation files('libs/unity-classes.jar')
+    implementation files('libs/zxing-3.1.0.jar')
 }

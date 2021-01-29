@@ -66,6 +66,31 @@ namespace FusionSDK.Core
             sdkClass.CallStatic("login");
 #endif
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type">1 QQ 2 微信</param>
+        public static void LoginByType(int type)
+        {
+#if FUSIONSDK_TENCENT
+            sdkClass.CallStatic("login", type);
+#else
+            Debug.LogWarning("该渠道不区分登录方式，调用普通登录方法。");
+            sdkClass.CallStatic("login");
+#endif
+        }
+        /// <summary>
+        /// 自动登录方法
+        /// </summary>
+        public static void AutoLogin()
+        {
+#if FUSIONSDK_TENCENT
+            sdkClass.CallStatic("getLoginInfo");
+#else
+            Debug.LogWarning("该渠道无自动登录，调用普通登录方法。");
+            sdkClass.CallStatic("login");
+#endif
+        }
 
         /// <summary>
         /// 用户登出
@@ -108,6 +133,19 @@ namespace FusionSDK.Core
         /// 8.sociaty:公会名称
         /// 9.vip:vip等级
         /// 10.type:时机类型，enterServer（登录），levelUp（升级），createRole（创建角色），exitServer（退出）
+        /// 可选：
+        /// 11、chapter：关卡章节
+        /// 12、power：战力
+        /// 13、point：积分
+        /// 14、professionId：职业id
+        /// 15、professionName：职业名称
+        /// 16、gender：性别
+        /// 17、professionRoleId：职业称号id
+        /// 18、professionRoleName：职业称号名称
+        /// 19、balance：库存余额
+        /// 20、partyRoleId：公会职位id
+        /// 21、friendList：好友列表
+        /// 22、ranking：排行榜
         /// </summary>
         /// <param name="jsonString"></param>
         public static void SubmitRoleData(string jsonString)
@@ -131,10 +169,11 @@ namespace FusionSDK.Core
             string currentChapterG = "0";
             try
             {
-                if (null != jsonData["chapter"])
+                if (jsonData.ContainsKey("chapter"))
                     currentChapterG = jsonData["chapter"].ToString(); // 关卡章节           
 
-            } catch (KeyNotFoundException e)
+            }
+            catch (KeyNotFoundException e)
             {
                 Debug.Log("Key not found: chapter");
             }
@@ -142,8 +181,8 @@ namespace FusionSDK.Core
             string powerG = "0";
             try
             {
-                if (null != jsonData["power"])
-                powerG = jsonData["power"].ToString(); // 战力
+                if (jsonData.ContainsKey("power"))
+                    powerG = jsonData["power"].ToString(); // 战力
             }
             catch (KeyNotFoundException e)
             {
@@ -153,8 +192,8 @@ namespace FusionSDK.Core
             string pointG = "0";
             try
             {
-                if (null != jsonData["point"])
-                pointG = jsonData["point"].ToString();  // 积分
+                if (jsonData.ContainsKey("point"))
+                    pointG = jsonData["point"].ToString();  // 积分
             }
             catch (KeyNotFoundException e)
             {
@@ -164,8 +203,8 @@ namespace FusionSDK.Core
             string professionIdG = null;
             try
             {
-                if (null != jsonData["professionId"])
-                professionIdG = jsonData["professionId"].ToString();  // 职业id
+                if (jsonData.ContainsKey("professionId"))
+                    professionIdG = jsonData["professionId"].ToString();  // 职业id
             }
             catch (KeyNotFoundException e)
             {
@@ -175,7 +214,7 @@ namespace FusionSDK.Core
             string professionNameG = null;
             try
             {
-                if (null != jsonData["professionName"])
+                if (jsonData.ContainsKey("professionName"))
                     professionNameG = jsonData["professionName"].ToString();  // 职业名称
             }
             catch (KeyNotFoundException e)
@@ -186,7 +225,7 @@ namespace FusionSDK.Core
             string genderG = null;
             try
             {
-                if (null != jsonData["gender"])
+                if (jsonData.ContainsKey("gender"))
                     genderG = jsonData["gender"].ToString();  // 性别
             }
             catch (KeyNotFoundException e)
@@ -196,7 +235,7 @@ namespace FusionSDK.Core
             string professionRoleIdG = null;
             try
             {
-                if (null != jsonData["professionRoleId"])
+                if (jsonData.ContainsKey("professionRoleId"))
                     professionRoleIdG = jsonData["professionRoleId"].ToString();  // 职业称号id
             }
             catch (KeyNotFoundException e)
@@ -206,8 +245,8 @@ namespace FusionSDK.Core
             string professionRoleNameG = null;
             try
             {
-                if (null != jsonData["professionRoleName"])
-                professionRoleNameG = jsonData["professionRoleName"].ToString();  // 职业称号名称
+                if (jsonData.ContainsKey("professionRoleName"))
+                    professionRoleNameG = jsonData["professionRoleName"].ToString();  // 职业称号名称
             }
             catch (KeyNotFoundException e)
             {
@@ -216,7 +255,7 @@ namespace FusionSDK.Core
             JsonData balanceG = null;
             try
             {
-                if (null != jsonData["balance"])
+                if (jsonData.ContainsKey("balance"))
                     balanceG = jsonData["balance"];  // [{“balanceid”:”1”,”balancename":"\u91d1\u5e01","balancenum":"600"},{"balanceid":"1","balancename":"\u91d1\u5e01","balancenum":"600"}]
             }
             catch (KeyNotFoundException e)
@@ -226,8 +265,8 @@ namespace FusionSDK.Core
             string sociatyRoleIdG = null;
             try
             {
-                if (null != jsonData["partyRoleId"])
-                sociatyRoleIdG = jsonData["partyRoleId"].ToString(); // 公会职位id
+                if (jsonData.ContainsKey("partyRoleId"))
+                    sociatyRoleIdG = jsonData["partyRoleId"].ToString(); // 公会职位id
             }
             catch (KeyNotFoundException e)
             {
@@ -236,7 +275,7 @@ namespace FusionSDK.Core
             string sociatyRoleNameG = null;
             try
             {
-                if (null != jsonData["partyRoleName"])
+                if (jsonData.ContainsKey("partyRoleName"))
                     sociatyRoleNameG = jsonData["partyRoleName"].ToString(); // 公会职位名称
             }
             catch (KeyNotFoundException e)
@@ -246,7 +285,7 @@ namespace FusionSDK.Core
             JsonData friendListG = null;
             try
             {
-                if (null != jsonData["friendList"])
+                if (jsonData.ContainsKey("friendList"))
                     friendListG = jsonData["friendList"]; // [{“roleid”:”1”,"intimacy":"0","nexusid":"600","nexusname":"情侣"},{"roleid":"2","intimacy":"0","nexusid":"200","nexusname":"仇人"}]
             }
             catch (KeyNotFoundException e)
@@ -256,7 +295,7 @@ namespace FusionSDK.Core
             JsonData rankingG = null;
             try
             {
-                if (null != jsonData["ranking"])
+                if (jsonData.ContainsKey("ranking"))
                     rankingG = jsonData["ranking"];  // [{“listid”:”1”,"listname":"\u91d1\u5e01","num":"600","coin":"XX","cost":"XX"},{"listid":"1","listname":"\u91d1\u5e01","num":"600","coin":"XX","cost":"XX"}]
             }
             catch (KeyNotFoundException e)
@@ -352,33 +391,25 @@ namespace FusionSDK.Core
 #if FUSIONSDK_UC
             JsonData jsonData = JsonMapper.ToObject(jsonString);
             string accountId = jsonData["accountId"].ToString();
-            string cpOrderID = jsonData["cpOrderID"].ToString();
+            string cpOrderId = jsonData["cpOrderId"].ToString();
             string amount = jsonData["amount"].ToString();
             string callbackInfo = jsonData["callbackInfo"].ToString();
             string notifyUrl = jsonData["notifyUrl"].ToString();
             string signType = jsonData["signType"].ToString();
             string sign = jsonData["sign"].ToString();
-            sdkClass.CallStatic("pay", accountId, cpOrderID, amount, callbackInfo, notifyUrl, signType, sign);
+            sdkClass.CallStatic("pay", accountId, cpOrderId, amount, callbackInfo, notifyUrl, signType, sign);
 #elif FUSIONSDK_HUAWEI
             JsonData jsonData = JsonMapper.ToObject(jsonString);
-            string productName = jsonData["productName"].ToString();
-            string productDesc = jsonData["productDesc"].ToString();
-            string appId = jsonData["applicationID"].ToString();
-            string requestId = jsonData["requestId"].ToString();
-            string amount = jsonData["amount"].ToString();
-            string merchantId = jsonData["merchantId"].ToString();
-            string serviceCatalog = jsonData["serviceCatalog"].ToString();
-            string merchantName = jsonData["merchantName"].ToString();
-            int sdkChannel = (int)jsonData["sdkChannel"];
-            string url = jsonData["url"].ToString();
-            string sign = jsonData["sign"].ToString();
+            string productId = jsonData["productId"].ToString();
+            int productType = (int)jsonData["productType"];
             string callbackInfo = jsonData["callbackInfo"].ToString();
-            sdkClass.CallStatic("pay", productName, productDesc, appId, requestId, amount, merchantId, serviceCatalog, merchantName, sdkChannel, url, sign, callbackInfo);
+            sdkClass.CallStatic("pay", productId, productType, callbackInfo);
 #elif FUSIONSDK_MI
             JsonData jsonData = JsonMapper.ToObject(jsonString);
             string cpOrderId = jsonData["cpOrderId"].ToString();
+            string productCode = jsonData["productCode"].ToString();
             string cpUserInfo = jsonData["callbackInfo"].ToString();
-            int amount = (int)jsonData["amount"];
+            int num = (int)jsonData["num"];
             string balance = jsonData["diamond"].ToString();
             string vip = jsonData["vip"].ToString();
             string level = jsonData["level"].ToString();
@@ -386,20 +417,13 @@ namespace FusionSDK.Core
             string name = jsonData["ATaccount"].ToString();
             string uid = jsonData["uid"].ToString();
             string server = jsonData["serverId"].ToString();
-            sdkClass.CallStatic("pay", cpOrderId, cpUserInfo, amount, balance, vip, level, sociaty, name, uid, server);
+            sdkClass.CallStatic("pay", cpOrderId, productCode, num, cpUserInfo, balance, vip, level, sociaty, name, uid, server);
 #elif FUSIONSDK_VIVO
-            JsonData jsonData = JsonMapper.ToObject(jsonString);
-            string productName = jsonData["productName"].ToString();
-            string productDes = jsonData["productDes"].ToString();
-            string productPrice = jsonData["productPrice"].ToString();
-            string vivoSignature = jsonData["vivoSignature"].ToString();
-            string appId = jsonData["appId"].ToString();
-            string transNo = jsonData["transNo"].ToString();
-            sdkClass.CallStatic("pay", productName, productDes, productPrice, vivoSignature, appId, transNo);
+            sdkClass.CallStatic("pay", jsonString);
 #elif FUSIONSDK_OPPO
             JsonData jsonData = JsonMapper.ToObject(jsonString);
             string orderId = jsonData["order"].ToString();
-            string amount = jsonData["amount"].ToString();
+            int amount = int.Parse(jsonData["amount"].ToString());
             string notifyUrl = jsonData["callbackUrl"].ToString();
             string attach = jsonData["callbackInfo"].ToString();
             string productName = jsonData["productName"].ToString();
@@ -469,6 +493,61 @@ namespace FusionSDK.Core
             Debug.LogWarning("敬请期待！"); //服务器调用接口获取
 #elif FUSIONSDK_TENCENT
             Debug.LogWarning("敬请期待！"); 
+#endif
+        }
+
+        /// <summary>
+        /// 支付完成后上报完成
+        /// </summary>
+        /// <param name="json">掉单的getTransNo  json数组</param>
+        /// <param name="isReOrder">普通支付后的通知是false，掉单补单为true</param>
+        public static void ReportOrderComplete(string json, bool isReOrder)
+        {
+            if (null == sdkClass)
+                return;
+#if FUSIONSDK_UC
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_HUAWEI
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_MI
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_VIVO
+            sdkClass.CallStatic("reportOrderComplete", json, isReOrder);
+#elif FUSIONSDK_OPPO
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_MEIZU
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_QIHOO
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#elif FUSIONSDK_TENCENT
+            Debug.LogWarning("该渠道无上报订单完成接口。");
+#endif
+        }
+
+        /// <summary>
+        /// 检查掉单
+        /// </summary>
+        public static void CheckMissingOrder()
+        {
+            if (null == sdkClass)
+                return;
+#if FUSIONSDK_UC
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_HUAWEI
+            // 0 消耗型 1 非消耗 2 订阅
+            sdkClass.CallStatic("checkMissingOrder", 0);
+#elif FUSIONSDK_MI
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_VIVO
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_OPPO
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_MEIZU
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_QIHOO
+            Debug.LogWarning("该渠道无需检查掉单。");
+#elif FUSIONSDK_TENCENT
+            Debug.LogWarning("该渠道无需检查掉单。");
 #endif
         }
     }

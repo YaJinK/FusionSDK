@@ -23,7 +23,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('libs/vivounionsdk_v4.2.0.0.jar')
     implementation files('libs/unity-classes.jar')
     implementation files('libs/org.apache.http.legacy.jar')
+    implementation files('libs/vivounionsdk_v4.6.0.1.jar')
+    implementation files('libs/msa_mdid_1.0.13.jar')
 }

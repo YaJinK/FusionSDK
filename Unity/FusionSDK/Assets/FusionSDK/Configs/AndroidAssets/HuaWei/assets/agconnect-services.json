@@ -1,0 +1,14 @@
+{
+	"client":{
+		"appType":"1",
+		"cp_id":"2850086000430060932",
+		"product_id":"736430079244729595",
+		"client_id":"511981115465008192",
+		"client_secret":"310728C9F3DA1D09C68DE644D32DB047EB66B2224843C3606A44AEE53285520B",
+		"project_id":"736430079244729595",
+		"app_id":"103140119",
+		"api_key":"CgB6e3x94cIhn313Re7zQPocbsE5Q0WQYC5d4inT7lquBsL3jszW9eKRMFDQK3+s+eFIWlzdR3JwkuxFl/YlJRgg",
+		"package_name":"com.shinian.le3.huawei"
+	},
+	"configuration_version":"1.0"
+}

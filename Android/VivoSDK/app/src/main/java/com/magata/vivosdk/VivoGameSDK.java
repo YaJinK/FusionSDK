@@ -3,6 +3,7 @@ package com.magata.vivosdk;
 import android.util.Log;
 import android.widget.Toast;
 import com.unity3d.player.UnityPlayer;
+import com.vivo.unionsdk.open.OrderResultInfo;
 import com.vivo.unionsdk.open.VivoAccountCallback;
 import com.vivo.unionsdk.open.VivoExitCallback;
 import com.vivo.unionsdk.open.VivoPayCallback;
@@ -11,15 +12,18 @@ import com.vivo.unionsdk.open.VivoRealNameInfoCallback;
 import com.vivo.unionsdk.open.VivoRoleInfo;
 import com.vivo.unionsdk.open.VivoUnionSDK;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VivoGameSDK {
     private static final String TAG = "VivoGameSDK";
     private static String vivoUid = "";
     private static String vivoToken = "";
     private static SdkEventReceiver receiver = new SdkEventReceiver();
-    public static boolean loginState = false;
 
     //sdk初始化
     public static void initSDK(){
@@ -34,10 +38,12 @@ public class VivoGameSDK {
         public void onVivoAccountLogin(String userName, String openId, String authToken) {
             //登录成功
             Log.d(TAG, "name=" + userName + ", openid=" + openId + ", authtoken=" + authToken);
-            loginState = true;
             vivoUid = openId;
             vivoToken = authToken;
+//            VivoUnionSDK.queryMissOrderResult(openId);
+
             JSONObject obj= new JSONObject();
+
             try {
                 obj.put("accessToken",authToken);
             }
@@ -63,45 +69,47 @@ public class VivoGameSDK {
 
     //sdk登陆
     public static void login(){
-        if (loginState == false)
-        {
-            VivoUnionSDK.login(UnityPlayer.currentActivity);
-        }
-        else
-        {
-            JSONObject obj= new JSONObject();
-            try {
-                obj.put("accessToken",vivoToken);
-            }
-            catch(Exception e){}
-            receiver.onLoginSucc(obj.toString());
-        }
+        VivoUnionSDK.login(UnityPlayer.currentActivity);
     }
 
-    public static void pay(String productName, String productDes, String productPrice, String vivoSignature, String appId, String transNo) {
-        VivoPayInfo.Builder builder = new VivoPayInfo.Builder();
-        builder.setProductName(productName);
-        builder.setProductDes(productDes);
-        builder.setProductPrice(productPrice);
-        builder.setVivoSignature(vivoSignature);
-        builder.setAppId(appId);
-        builder.setTransNo(transNo);
-        builder.setUid(vivoUid);
+    public static void pay(String json) {
+        Log.d(TAG, VivoApplication.globalAppId);
+        Log.d(TAG, vivoUid);
+        try {
+            JSONObject jsonData = new JSONObject(json);
+            VivoPayInfo vivoPayInfo = new VivoPayInfo.Builder()
+                    //基本支付信息
+                    .setAppId(VivoApplication.globalAppId)
+                    .setCpOrderNo(jsonData.getString("cpOrderNo"))
+                    .setExtInfo(jsonData.getString("callbackInfo"))
+                    .setNotifyUrl(jsonData.getString("notifyUrl"))
+                    .setOrderAmount(jsonData.getString("orderAmount"))
+                    .setProductDesc(jsonData.getString("productDesc"))
+                    .setProductName(jsonData.getString("productName"))
+                    //计算出来的参数验签
+                    .setVivoSignature(jsonData.getString("sign"))
+                    //接入vivo帐号传uid，未接入传""
+                    .setExtUid(vivoUid)
+                    .build();
+            VivoUnionSDK.payV2(UnityPlayer.currentActivity, vivoPayInfo, new VivoPayCallback() {
+                @Override
+                public void onVivoPayResult(int var1, OrderResultInfo var2) {
+                    Log.d(TAG, "onVivoPayResult: "+var1);
+                    Log.d(TAG, "onVivoPayResult: "+var2.toString());
 
-        VivoPayInfo vivoPayInfo = builder.build();
-
-        VivoUnionSDK.pay(UnityPlayer.currentActivity, vivoPayInfo, new VivoPayCallback() {
-            @Override
-            public void onVivoPayResult(String arg0, boolean arg1, String arg2) {
-                if (arg1) {
-                    Toast.makeText(UnityPlayer.currentActivity, "支付成功", Toast.LENGTH_SHORT).show();
-                    receiver.onCreateOrderSucc("OK");
-                } else {
-                    Toast.makeText(UnityPlayer.currentActivity, "支付失败", Toast.LENGTH_SHORT).show();
-                    receiver.onPayUserExit("Cancel");
+                    if (var1 == 0) {
+                        Toast.makeText(UnityPlayer.currentActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                        receiver.onCreateOrderSucc("OK");
+                    } else {
+                        Toast.makeText(UnityPlayer.currentActivity, "支付失败", Toast.LENGTH_SHORT).show();
+                        receiver.onPayUserExit("Cancel");
+                    }
                 }
-            }
-        });
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //提交用户信息
@@ -166,5 +174,23 @@ public class VivoGameSDK {
                 receiver.onGetCertificationInfoFailed("Vivo  OnGetRealNameInfoFailed");
             }
         });
+    }
+
+    /*
+    json: 掉单的getTransNo  json数组
+    isReOrder: 普通支付后的通知是false，掉单补单为true
+    */
+    public static void reportOrderComplete(String json, boolean isReOrder){
+        try {
+            JSONArray array = new JSONArray(json);
+            List<String> list = new ArrayList<String>();
+            for (int i = 0; i < array.length(); i++) {
+                Log.d(TAG, "reportOrderComplete: " + array.getString(i));
+                list.add(array.getString(i));
+            }
+            VivoUnionSDK.reportOrderComplete(list, isReOrder);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

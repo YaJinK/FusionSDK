@@ -29,7 +29,8 @@ namespace FusionSDK.Core
         public CallBackFunction onExitSDKSuccHandle;
         public CallBackFunctionString onGetCertificationInfoSuccHandle;
         public CallBackFunctionString onGetCertificationInfoFailedHandle;
-
+        public CallBackFunctionString onQueryMissOrderResultSuccHandle;
+        
         /// <summary>
         /// 进入游戏调用登录
         /// </summary>
@@ -234,6 +235,19 @@ namespace FusionSDK.Core
             if (onGetCertificationInfoFailedHandle != null)
             {
                 onGetCertificationInfoFailedHandle(msg);
+            }
+        }
+
+        /// <summary>
+        /// 获取掉单信息成功
+        /// </summary>
+        /// <param name="list"></param>
+        public void onQueryMissOrderResultSucc(string list)
+        {
+            log("掉单信息：" + list);
+            if (onQueryMissOrderResultSuccHandle != null)
+            {
+                onQueryMissOrderResultSuccHandle(list);
             }
         }
 

@@ -13,4 +13,4 @@
         android:gravity="center"
         android:visibility="invisible"/>
 
-</LinearLayout><!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout-port/unipay_layout_activity_web.xml -->
+</LinearLayout>

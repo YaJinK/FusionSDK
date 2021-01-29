@@ -31,4 +31,4 @@
         android:text="跳过"
         android:textColor="#e0404040"
         android:textSize="9sp" />
-</RelativeLayout><!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_ad.xml -->
+</RelativeLayout>

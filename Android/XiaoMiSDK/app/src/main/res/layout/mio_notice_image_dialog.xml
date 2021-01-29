@@ -31,7 +31,7 @@
                 android:layout_width="@dimen/view_dimen_90"
                 android:layout_height="@dimen/view_dimen_90"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/mio_notice_text_dialog_close" />
+                android:background="@drawable/mio_notice_image_dialog_close" />
         </RelativeLayout>
 
         <LinearLayout

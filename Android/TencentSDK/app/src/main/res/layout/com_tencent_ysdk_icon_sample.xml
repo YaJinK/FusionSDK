@@ -27,14 +27,18 @@
             android:gravity="center"
             android:visibility="gone" />
 
-
-        <Button
-            android:id="@+id/com_tencent_ysdk_icon_h5_xx"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignRight="@id/com_tencent_ysdk_icon_webView"
+        <RelativeLayout
+            android:layout_height="40dp"
+            android:layout_width="40dp"
             android:layout_alignTop="@id/com_tencent_ysdk_icon_webView"
-            android:background="@drawable/com_tencent_ysdk_icon_h5_xx" />
+            android:layout_alignRight="@id/com_tencent_ysdk_icon_webView">
+            <Button
+                android:id="@+id/com_tencent_ysdk_icon_h5_xx"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/com_tencent_ysdk_icon_h5_xx" />
+        </RelativeLayout>
 
     </RelativeLayout>
-</RelativeLayout><!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_icon_sample.xml -->
+</RelativeLayout>

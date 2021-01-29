@@ -1,266 +1,184 @@
 package com.magata.huaweisdk;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.huawei.android.hms.agent.HMSAgent;
-import com.huawei.android.hms.agent.common.handler.CheckUpdateHandler;
-import com.huawei.android.hms.agent.common.handler.ConnectHandler;
-import com.huawei.android.hms.agent.game.handler.GetCertificationInfoHandler;
-import com.huawei.android.hms.agent.game.handler.GetCertificationIntentHandler;
-import com.huawei.android.hms.agent.game.handler.LoginHandler;
-import com.huawei.android.hms.agent.game.handler.SaveInfoHandler;
-import com.huawei.android.hms.agent.pay.handler.PayHandler;
-import com.huawei.android.hms.agent.push.handler.GetTokenHandler;
-import com.huawei.hms.api.ConnectionResult;
-import com.huawei.hms.support.api.entity.core.CommonCode;
-import com.huawei.hms.support.api.entity.game.GamePlayerInfo;
-import com.huawei.hms.support.api.entity.game.GameStatusCodes;
-import com.huawei.hms.support.api.entity.game.GameUserData;
-import com.huawei.hms.support.api.entity.pay.PayReq;
-import com.huawei.hms.support.api.entity.pay.PayStatusCodes;
-import com.huawei.hms.support.api.game.CertificateIntentResult;
-import com.huawei.hms.support.api.game.PlayerCertificationInfo;
-import com.huawei.hms.support.api.pay.PayResultInfo;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.iap.Iap;
+import com.huawei.hms.iap.IapApiException;
+import com.huawei.hms.iap.entity.InAppPurchaseData;
+import com.huawei.hms.iap.entity.IsEnvReadyResult;
+import com.huawei.hms.iap.entity.OrderStatusCode;
+import com.huawei.hms.iap.entity.OwnedPurchasesReq;
+import com.huawei.hms.iap.entity.OwnedPurchasesResult;
+import com.huawei.hms.iap.entity.PurchaseIntentReq;
+import com.huawei.hms.iap.entity.PurchaseIntentResult;
+import com.huawei.hms.jos.AppUpdateClient;
+import com.huawei.hms.jos.JosApps;
+import com.huawei.hms.jos.JosAppsClient;
+import com.huawei.hms.support.api.client.Status;
+import com.huawei.hms.support.hwid.HuaweiIdAuthManager;
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams;
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper;
+import com.huawei.hms.support.hwid.service.HuaweiIdAuthService;
+import com.huawei.updatesdk.service.appmgr.bean.ApkUpgradeInfo;
+import com.huawei.updatesdk.service.otaupdate.CheckUpdateCallBack;
+import com.huawei.updatesdk.service.otaupdate.UpdateKey;
 import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 public class HuaWeiGameSDK {
 
     private static SdkEventReceiver receiver = new SdkEventReceiver();
     private static String TAG = "HuaWeiGameSDK";
-
     public static SdkEventReceiver GetReceiver() {
         if (null == receiver)
             receiver = new SdkEventReceiver();
         return receiver;
     }
 
-    public static void GetPushToken() {
-        HMSAgent.Push.getToken(new GetTokenHandler() {
-            @Override
-            public void onResult(int rst) {
-                Log.d(TAG, "GetTokenHandler rst:" + rst);
-            }
-        });
-    }
-
     public static void initSDK(){
-        HMSAgent.connect(UnityPlayer.currentActivity, new ConnectHandler() {
+        JosAppsClient appsClient = JosApps.getJosAppsClient(UnityPlayer.currentActivity);
+        appsClient.init();
+
+        final AppUpdateClient client = JosApps.getAppUpdateClient(UnityPlayer.currentActivity);
+        client.checkAppUpdate(UnityPlayer.currentActivity, new CheckUpdateCallBack(){
             @Override
-            public void onConnect(int rst) {
-                Log.d(TAG, "HMS connect end:" + rst);
-                Log.d(TAG, "onConnect: isNetwork " + isNetworkConnected());
-
-                if (!isNetworkConnected()) {
-                    receiver.onInitFailed("当前网络异常，请稍后重试");
-                    return;
-                }
-
-                if (HMSAgent.AgentResultCode.HMSAGENT_SUCCESS == rst) {
-                    HMSAgent.checkUpdate(UnityPlayer.currentActivity, new CheckUpdateHandler() {
-                        @Override
-                        public void onResult(int rst) {
-                            Log.d("HuaWei", "check app update rst:" + rst);
-                        }
-                    });
-                    if (!isHMSVersionGreater303(UnityPlayer.currentActivity)){
-                        Toast.makeText(UnityPlayer.currentActivity, "请您到“华为帐号-个人信息-实名认证”页面进行实名认证，如果您已认证，请忽略此消息。", Toast.LENGTH_LONG).show();
+            public void onUpdateInfo(Intent intent) {
+                if (intent != null) {
+                    // 获取更新状态码， Default_value为取不到status时默认的返回码，由应用自行决定
+                    int status = intent.getIntExtra(UpdateKey.STATUS, 4444);
+                    // 错误码，建议打印
+                    int rtnCode = intent.getIntExtra(UpdateKey.FAIL_CODE, 4444);
+                    // 失败信息，建议打印
+                    String rtnMessage = intent.getStringExtra(UpdateKey.FAIL_REASON);
+                    Serializable info = intent.getSerializableExtra(UpdateKey.INFO);
+                    //可通过获取到的info是否属于ApkUpgradeInfo类型来判断应用是否有更新
+                    if (info instanceof ApkUpgradeInfo) {
+                        // 这里调用showUpdateDialog接口拉起更新弹窗，由于demo有单独拉起弹窗按钮，所以不在此调用，详见checkUpdatePop()方
+                        Log.d(TAG, "There is a new update");
+                        ApkUpgradeInfo apkUpgradeInfo = (ApkUpgradeInfo) info;
+                        client.showUpdateDialog(UnityPlayer.currentActivity, apkUpgradeInfo, true);
                     }
-                    receiver.onInitSucc();
-                } else if (ConnectionResult.CANCELED == rst) {
-                    initSDK();
-                } else if (ConnectionResult.SERVICE_MISSING == rst) {
-                    initSDK();
-                } else if (ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED == rst) {
-                    receiver.onInitFailed("设备上安装的华为移动服务需要升级");
-                } else if (ConnectionResult.SERVICE_DISABLED == rst) {
-                    receiver.onInitFailed("华为移动服务被禁用，请到设备系统设置中启用。");
-                } else if (ConnectionResult.BINDFAIL_RESOLUTION_REQUIRED == rst) {
-                    receiver.onInitFailed("初始化失败");
-                } else if (ConnectionResult.INTERNAL_ERROR == rst) {
-                    initSDK();
-                } else if (ConnectionResult.SERVICE_INVALID == rst) {
-                    receiver.onInitFailed("设备上安装的华为移动服务应用有伪造嫌疑，请确认华为移动服务应用来源是否正确。");
-                } else if (ConnectionResult.TIMEOUT == rst) {
-                    receiver.onInitFailed("连接超时，请检查网络后重试。");
-                } else if (ConnectionResult.SERVICE_UNSUPPORTED == rst) {
-                    receiver.onInitFailed("HMS支持的android最低版本为Android4.0.3。");
-                } else if (HMSAgent.AgentResultCode.APICLIENT_TIMEOUT == rst) {
-                    receiver.onInitFailed("华为移动服务连接超时，请检查网络后重试。");
-                } else if (6006 == rst) {
-                    receiver.onInitFailed("接口鉴权：授权过期");
-                } else if (ConnectionResult.INTERNAL_ERROR == rst) {
-                    receiver.onInitFailed("发生内部错误");
-                } else if (907135006 == rst) {
-                    receiver.onInitFailed("AIDL连接session无效");
-                } else if (907135005 == rst) {
-                    receiver.onInitFailed("当前区域不支持此业务");
-                } else if (907135700 == rst) {
-                    receiver.onInitFailed("查询应用scope失败，请检查手机网络是否可以正常访问互联网。");
-                }
-                else {
-                    receiver.onInitFailed("发生未知错误：" + rst);
+                    Log.d(TAG, "onUpdateInfo status: " + status + ", rtnCode: " + rtnCode + ", rtnMessage: " + rtnMessage);
                 }
             }
+
+            @Override
+            public void onMarketInstallInfo(Intent intent) {
+            }
+
+            @Override
+            public void onMarketStoreError(int i) {
+                Log.d(TAG, "onMarketStoreError: " + i);
+            }
+
+            @Override
+            public void onUpdateStoreError(int i) {
+                Log.d(TAG, "onUpdateStoreError: " + i);
+
+            }
         });
-
-    }
-
-    private static boolean isNetworkConnected(){
-        ConnectivityManager mConnectivityManager = (ConnectivityManager) UnityPlayer.currentActivity
-                         .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-        if (mNetworkInfo != null) {
-            return mNetworkInfo.isAvailable();
-        }else {
-            return false;
-        }
-    }
-
-    public static void showFloatWindow() {
-        HMSAgent.Game.showFloatWindow(UnityPlayer.currentActivity);
-    }
-
-    public static void hideFloatWindow() {
-        HMSAgent.Game.hideFloatWindow(UnityPlayer.currentActivity);
+        receiver.onInitSucc();
     }
 
     public static void saveUserInfo(String server, String level, String name, String sociaty){
-        GamePlayerInfo gpi = new GamePlayerInfo();
-        gpi.area = server;
-        gpi.rank = "level " + level;
-        gpi.role = name;
-        gpi.sociaty = sociaty;
-        HMSAgent.Game.savePlayerInfo(gpi, new SaveInfoHandler(){
-            @Override
-            public void onResult(int retCode) {
-                Log.d(TAG, "game savePlayerInfo: onResult=" + retCode);
-                if (retCode == GameStatusCodes.GAME_STATE_SUCCESS)
-                    receiver.onSaveUserInfoSucc();
-                else
-                    receiver.onSaveUserInfoFailed("FailedCode:" + retCode);
-            }
-        });
+        Log.d(TAG, "华为已取消上传角色信息接口");
     }
 
     public static void login(){
-        HMSAgent.Game.login(new LoginHandler() {
-            @Override
-            public void onChange() {
-                Log.d(TAG, "onChange: ");
-                receiver.onLogoutSucc();
-            }
-
-            @Override
-            public void onResult(int rst, GameUserData result) {
-                Log.d(TAG, "onResult: " + rst);
-
-                if (HMSAgent.AgentResultCode.HMSAGENT_SUCCESS == rst) {
-                    HMSAgent.Game.showFloatWindow(UnityPlayer.currentActivity);
-                    if (1 == result.getIsAuth()) {
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("playerId", result.getPlayerId());
-                            jsonObject.put("ts", result.getTs());
-                            jsonObject.put("playerLevel", result.getPlayerLevel());
-                            jsonObject.put("playerSSign", result.getGameAuthSign());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d(TAG, jsonObject.toString());
-                        if (isHMSVersionGreater303(UnityPlayer.currentActivity)) {
-                            HMSAgent.Game.getCertificationInfo(new GetCertificationInfoHandler() {
-                                @Override
-                                public void onResult(int resultCode, PlayerCertificationInfo certificationInfo) {
-                                    if (resultCode == CommonCode.OK && certificationInfo != null) {
-                                        int statusCode = certificationInfo.getStatus().getStatusCode();
-                                        if (statusCode == GameStatusCodes.GAME_STATE_SUCCESS) {
-                                            // TODO: 通过 certificationInfo.hasAdault()获取实名认证结果，储存结果已进行后续处理
-                                            Log.d(TAG, "is CertificateAdult:" + certificationInfo.hasAdault());
-                                            if (certificationInfo.hasAdault() == -1) {
-                                                getCertificationIntent();
-                                            }
-                                        } else if (statusCode == GameStatusCodes.GAME_STATE_NO_SUPPORT) {
-                                            Toast.makeText(UnityPlayer.currentActivity, "防沉迷信息验证失败，请升级'华为移动服务'。", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Log.d(TAG, "getPlayerCertificationInfo result:" + statusCode);
-                                        }
-                                    } else {
-                                        Log.d(TAG, "getPlayerCertificationIntent resultCode:" + resultCode);
-                                    }
-                                }
-                            });
-                        }
-                        receiver.onLoginSucc(jsonObject.toString());
-                    }
-                } else if (GameStatusCodes.GAME_STATE_ERROR == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "登录操作异常，请重试。", Toast.LENGTH_SHORT).show();
-                } else if (GameStatusCodes.GAME_STATE_NETWORK_ERROR == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "请检查网络状态。", Toast.LENGTH_SHORT).show();
-                } else if (GameStatusCodes.GAME_STATE_USER_CANCEL_LOGIN == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "用户取消登陆。", Toast.LENGTH_SHORT).show();
-                } else if (GameStatusCodes.GAME_STATE_USER_CANCEL == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "用户取消实名认证。", Toast.LENGTH_SHORT).show();
-                } else if (GameStatusCodes.GAME_STATE_DISAGREE_PROTOCOL == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "用户未同意协议。", Toast.LENGTH_SHORT).show();
-                } else if (GameStatusCodes.GAME_STATE_CALL_REPEAT == rst) {
-                    Toast.makeText(UnityPlayer.currentActivity, "正在登陆中，请稍后...", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, 1);
+        HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM_GAME).createParams();
+        HuaweiIdAuthService service = HuaweiIdAuthManager.getService(UnityPlayer.currentActivity, authParams);
+        UnityPlayer.currentActivity.startActivityForResult(service.getSignInIntent(), 8888);
     }
 
     public static void logout(){
         receiver.onLogoutSucc();
     }
 
-//serviceCatalog 为程序类型 游戏为X6  sdkChannel游戏为3
-    public static void pay(String productName, String productDesc, String appId, String requestId, String amount, String merchantId, String serviceCatalog, String merchantName, int sdkChannel, String url, String sign, String extReserved) {
-        PayReq payReq = new PayReq();
+    public static void pay(String productIdInput, int productTypeInput, String callbackInfoInput) {
+        final String productId = productIdInput;
+        final int productType = productTypeInput;
+        final String callbackInfo = callbackInfoInput;
 
-        payReq.productName = productName;
-        payReq.productDesc = productDesc;
-        payReq.applicationID = appId;
-        payReq.requestId = requestId;
-        payReq.amount = amount;
-        payReq.merchantId = merchantId;
-        payReq.serviceCatalog = serviceCatalog;
-        payReq.merchantName = merchantName;
-        payReq.sdkChannel = sdkChannel;
-        payReq.url = url;
-        payReq.sign = sign;
-        payReq.extReserved = extReserved;
-
-        HMSAgent.Pay.pay(payReq, new PayHandler() {
+        // 获取调用接口的Activity对象
+        final Activity activity = UnityPlayer.currentActivity;
+        Task<IsEnvReadyResult> task = Iap.getIapClient(activity).isEnvReady();
+        task.addOnSuccessListener(new OnSuccessListener<IsEnvReadyResult>() {
             @Override
-            public void onResult(int retCode, PayResultInfo payInfo) {
-                Log.d(TAG, "onResult: " + retCode);
-
-                if (retCode == HMSAgent.AgentResultCode.HMSAGENT_SUCCESS && payInfo != null) {
-                    receiver.onCreateOrderSucc("OK");
-                } else {
-                    String result = "NotOK";
-                    if (retCode == HMSAgent.AgentResultCode.ON_ACTIVITY_RESULT_ERROR) {
-                        Toast.makeText(UnityPlayer.currentActivity, "请前往应用管理开启“华为移动服务”“华为应用市场”的“后台弹出界面”权限！", Toast.LENGTH_LONG).show();
-                    } else if (retCode == PayStatusCodes.PAY_STATE_CANCEL) {
-                        Toast.makeText(UnityPlayer.currentActivity, "用户取消支付。", Toast.LENGTH_SHORT).show();
-                    } else if (retCode == PayStatusCodes.PAY_STATE_NET_ERROR){
-                        Toast.makeText(UnityPlayer.currentActivity, "网络连接异常。", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(UnityPlayer.currentActivity, "支付失败！错误code：" + retCode, Toast.LENGTH_SHORT).show();
+            public void onSuccess(IsEnvReadyResult result) {
+                // 获取接口请求的结果
+                // 构造一个PurchaseIntentReq对象
+                PurchaseIntentReq req = new PurchaseIntentReq();
+// 通过createPurchaseIntent接口购买的商品必须是您在AppGallery Connect网站配置的商品。
+                req.setProductId(productId);
+// priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
+                req.setPriceType(productType);
+                req.setDeveloperPayload(callbackInfo);
+// 调用createPurchaseIntent接口创建托管商品订单
+                Task<PurchaseIntentResult> task = Iap.getIapClient(activity).createPurchaseIntent(req);
+                task.addOnSuccessListener(new OnSuccessListener<PurchaseIntentResult>() {
+                    @Override
+                    public void onSuccess(PurchaseIntentResult result) {
+                        // 获取创建订单的结果
+                        Status status = result.getStatus();
+                        if (status.hasResolution()) {
+                            try {
+                                // 6666是您自定义的int类型常量
+                                // 启动IAP返回的收银台页面
+                                status.startResolutionForResult(activity, 6666);
+                            } catch (IntentSender.SendIntentException exp) {
+                            }
+                        }
                     }
-                    receiver.onPayUserExit(result);
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        if (e instanceof IapApiException) {
+                            IapApiException apiException = (IapApiException) e;
+                            Status status = apiException.getStatus();
+                            int returnCode = apiException.getStatusCode();
+                            Log.d(TAG, "Status:"+status +"ErrCode:"+returnCode);
+
+                        } else {
+                            // 其他外部错误
+                            Log.d(TAG, "其他外部错误");
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                if (e instanceof IapApiException) {
+                    IapApiException apiException = (IapApiException) e;
+                    Status status = apiException.getStatus();
+                    if (status.getStatusCode() == OrderStatusCode.ORDER_HWID_NOT_LOGIN) {
+                        // 未登录帐号
+                        if (status.hasResolution()) {
+                            try {
+                                // 6666是您自定义的int类型常量
+                                // 启动IAP返回的登录页面
+                                status.startResolutionForResult(activity, 6666);
+                            } catch (IntentSender.SendIntentException exp) {
+                            }
+                        }
+                    } else if (status.getStatusCode() == OrderStatusCode.ORDER_ACCOUNT_AREA_NOT_SUPPORTED) {
+                        // 用户当前登录的华为帐号所在的服务地不在华为IAP支持结算的国家或地区中
+                        Toast.makeText(UnityPlayer.currentActivity, "当前登录的华为帐号所在的服务地不在华为IAP支持结算的国家或地区中", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -270,74 +188,58 @@ public class HuaWeiGameSDK {
         receiver.onExitSucc("Exit");
     }
 
-    public static void getCertificationIntent() {
-        HMSAgent.Game.getCertificationIntent(new GetCertificationIntentHandler() {
-            @Override
-            public void onResult(int resultCode, CertificateIntentResult result) {
-                if(resultCode == CommonCode.OK && result != null) {
-                    int statusCode = result.getStatus().getStatusCode();
-                    if(statusCode == GameStatusCodes.GAME_STATE_SUCCESS) {
-                        Log.d(TAG, "GetCtfIntent success, Start intent");
-                        /**
-                         * 拉起实名认证页面
-                         */
-                        Intent intent = result.getCertificationIntent();
-                        UnityPlayer.currentActivity.startActivityForResult(intent,1000);
-                    }
-                    else {
-                        Log.d(TAG, "getPlayerCertificationIntent onResult:" + statusCode);
-                    }
-                }
-                else
-                {
-                    Log.d(TAG, "getPlayerCertificationIntent resultCode:" + resultCode);
-                }
-            }
-        });
+    public static void getCertificationInfo() {
+
     }
 
-    public static void getCertificationInfo() {
-        HMSAgent.Game.getCertificationInfo(new GetCertificationInfoHandler() {
+    public static void checkMissingOrder(int productType) {
+        // 构造一个OwnedPurchasesReq对象
+        OwnedPurchasesReq ownedPurchasesReq = new OwnedPurchasesReq();
+// priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
+        ownedPurchasesReq.setPriceType(productType);
+// 获取调用接口的Activity对象
+        Activity activity = UnityPlayer.currentActivity;
+// 调用obtainOwnedPurchases接口获取所有已购但未发货的消耗型商品
+        Task<OwnedPurchasesResult> task = Iap.getIapClient(activity).obtainOwnedPurchases(ownedPurchasesReq);
+        task.addOnSuccessListener(new OnSuccessListener<OwnedPurchasesResult>() {
             @Override
-            public void onResult(int resultCode, PlayerCertificationInfo certificationInfo) {
-                if (resultCode == CommonCode.OK && certificationInfo != null) {
-                    int statusCode = certificationInfo.getStatus().getStatusCode();
-                    if (statusCode == GameStatusCodes.GAME_STATE_SUCCESS) {
-                        // TODO: 通过 certificationInfo.hasAdault()获取实名认证结果，储存结果已进行后续处理
-                        Log.d(TAG, "is CertificateAdult:" + certificationInfo.hasAdault());
-                        JSONObject jsonObject = new JSONObject();
+            public void onSuccess(OwnedPurchasesResult result) {
+                // 获取接口请求成功的结果
+                if (result != null && result.getInAppPurchaseDataList() != null) {
+                    for (int i = 0; i < result.getInAppPurchaseDataList().size(); i++) {
+                        String inAppPurchaseData = result.getInAppPurchaseDataList().get(i);
+                        String inAppSignature = result.getInAppSignature().get(i);
+                        // 使用应用的IAP公钥验证inAppPurchaseData的签名数据
+                        // 如果验签成功，确认每个商品的购买状态。确认商品已支付后，检查此前是否已发过货，未发货则进行发货操作。发货成功后执行消耗操作
+                        Log.d(TAG, "checkMissingOrder inAppPurchaseData:" + inAppPurchaseData);
+                        Log.d(TAG, "checkMissingOrder inAppSignature:" + inAppSignature);
                         try {
-                            jsonObject.put("hasAdault", certificationInfo.hasAdault());
+                            JSONObject json = new JSONObject();
+                            json.put("inAppPurchaseData", inAppPurchaseData);
+                            json.put("inAppPurchaseDataSignature", inAppSignature);
+                            receiver.onCreateOrderSucc(json.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        receiver.onGetCertificationInfoSucc(jsonObject.toString());
-                    } else if (statusCode == GameStatusCodes.GAME_STATE_NO_SUPPORT) {
-                        Toast.makeText(UnityPlayer.currentActivity, "防沉迷信息验证失败，请升级'华为移动服务'。", Toast.LENGTH_LONG).show();
-                        receiver.onGetCertificationInfoFailed("防沉迷信息验证失败，请升级'华为移动服务'。");
-                    } else {
-                        Log.d(TAG, "getPlayerCertificationInfo result:" + statusCode);
-                        receiver.onGetCertificationInfoFailed("getPlayerCertificationInfo result:" + statusCode);
                     }
-                } else {
-                    Log.d(TAG, "getPlayerCertificationIntent resultCode:" + resultCode);
-                    receiver.onGetCertificationInfoFailed("getPlayerCertificationIntent resultCode:" + resultCode);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                if (e instanceof IapApiException) {
+                    IapApiException apiException = (IapApiException) e;
+                    Status status = apiException.getStatus();
+                    int returnCode = apiException.getStatusCode();
+                    Log.d(TAG, "checkMissingOrder status:" + status);
+                    Log.d(TAG, "checkMissingOrder returnCode:" + returnCode);
 
+                } else {
+                    // 其他外部错误
+                    if (null != e )
+                        e.printStackTrace();
                 }
             }
         });
-    }
-
-    public static boolean isHMSVersionGreater303(Context context) {
-        PackageManager manager = context.getPackageManager();
-        boolean codeStr = false;
-        try {
-            PackageInfo info = manager.getPackageInfo("com.huawei.hwid", 0);
-            if (info.versionCode >= 30003300)
-                codeStr = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return codeStr;
     }
 }

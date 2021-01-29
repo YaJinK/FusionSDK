@@ -3,12 +3,12 @@
     <application >
         <meta-data
             android:name="com.magata.misdk.appid"
-            android:value="appid=2882303761517853433">
+            android:value="appid=#[appId]">
         </meta-data>
 
         <meta-data
             android:name="com.magata.misdk.appkey"
-            android:value="appkey=5241785363433">
+            android:value="appkey=#[appKey]">
         </meta-data>
     </application>
 </manifest>

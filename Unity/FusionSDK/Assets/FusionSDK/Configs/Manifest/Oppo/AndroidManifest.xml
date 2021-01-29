@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application >
-    <meta-data android:name="debug_mode" android:value="false" />
+    <meta-data android:name="debug_mode" android:value="#[debugMode]" />
     <!-- 日志开关，发布时候设置为false -->
-    <meta-data android:name="is_offline_game" android:value="false" />
+    <meta-data android:name="is_offline_game" android:value="#[isOfflineGame]" />
     <!-- true:单机游戏   false:网游 -->
-    <meta-data android:name="app_key" android:value="54fb8e994be1420f99f2655d33a694a5" />
+    <meta-data android:name="app_key" android:value="#[appKey]" />
     <!--appKey，游戏上线时请务必替换成游戏自身的appkey-->
-    <meta-data android:name="com.magata.opposdk.appsecret" android:value="appsecret=745b0df254634cf5b00646b8af3c73df" />
+    <meta-data android:name="com.magata.opposdk.appsecret" android:value="appsecret=#[appSecret]" />
     <!--appSecret-->
   </application>
 </manifest>

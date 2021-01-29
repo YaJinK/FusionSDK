@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application >
         <meta-data
-            android:name="com.magata.tencentsdk.isuseyyb"
-            android:value="false">  <!-->是否使用应用宝更新<-->
+            android:name="com.magata.tencentsdk.ysdkEnv"
+            android:value="0">  <!-->1代表正式，0代表测试<-->
         </meta-data>
 
          <!-- TODO GAME SDK QQ接入配置 START -->

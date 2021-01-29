@@ -87,11 +87,16 @@ public class XiaoMiGameSDK {
         receiver.onLogoutSucc();
     }
 
-    public static void pay(String cpOrderId, String cpUserInfo, int amount, String balance, String vip, String level, String sociaty, String name, String uid, String server) {
+    public static void pay(String cpOrderId, String productCode, int num, String cpUserInfo, String balance, String vip, String level, String sociaty, String name, String uid, String server) {
         MiBuyInfo miBuyInfo = new MiBuyInfo();
         miBuyInfo.setCpOrderId(cpOrderId);//订单号唯一（不为空）
         miBuyInfo.setCpUserInfo(cpUserInfo); //此参数在用户支付成功后会透传给CP的服务器
-        miBuyInfo.setAmount(amount); //必须是大于1的整数，10代表10米币，即10元人民币（不为空）
+
+        miBuyInfo.setProductCode(productCode);//商品代码，开发者申请获得（不为空）
+        miBuyInfo.setCount(num);//购买数量(商品数量最大9999，最小1)（不为空）
+
+
+
 //用户信息，网游必须设置、单机游戏或应用可选
         Bundle mBundle = new Bundle();
         mBundle.putString(GameInfoField.GAME_USER_BALANCE, balance);   //用户余额

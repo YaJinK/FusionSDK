@@ -131,7 +131,13 @@
             android:exported="true"
             android:process=":bgservice" />
         <!-- sdk service end -->
+        <activity
+            android:name="cn.uc.paysdk.SDKActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden|adjustResize" />
 
+        <service android:name="cn.uc.paysdk.service.SDKService" />
     </application>
 
 </manifest>

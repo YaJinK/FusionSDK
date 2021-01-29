@@ -14,7 +14,7 @@
 
     <dimen name="float_hide_tip_icon_size">83.3dip</dimen>
     <dimen name="float_hide_tip_view_height">156.6dip</dimen>
-    <dimen name="float_hide_tip_black_height">200.6dip</dimen>
+    <dimen name="float_hide_tip_black_height">133.3dip</dimen>
     <dimen name="float_hide_tip_padding_bot">13.3dip</dimen>
     <dimen name="float_hide_tip_tmp_height">33.3dip</dimen>
     <dimen name="float_hide_tip_text_padding">1.6dip</dimen>
@@ -52,4 +52,6 @@
     <dimen name="float_window_hide_width">29.25dip</dimen>
     <dimen name="float_window_hide_height">58.5dip</dimen>
     <dimen name="float_window_height">58.5dip</dimen>
+
+    <dimen name="bot_ctrl_left">41.3dip</dimen>
 </resources>

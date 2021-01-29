@@ -69,5 +69,9 @@ public class SdkEventReceiver {
     public void onGetCertificationInfoFailed(String msg) {
         UnityPlayer.UnitySendMessage(CALLBACK_FUNCTION, "onGetCertificationInfoFailed", msg);
     }
+
+    public void onQueryMissOrderResultSucc(String json) {
+        UnityPlayer.UnitySendMessage(CALLBACK_FUNCTION, "onQueryMissOrderResultSucc", json);
+    }
 }
 

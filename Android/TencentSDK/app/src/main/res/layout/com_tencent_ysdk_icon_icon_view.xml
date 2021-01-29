@@ -28,11 +28,28 @@
         android:id="@+id/com_tencent_ysdk_icon_icon_redl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="-15dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="-10dp"
+        android:layout_marginTop="6dp"
         android:layout_toLeftOf="@id/com_tencent_ysdk_icon_icon"
+        android:src="@drawable/com_tencent_ysdk_icon_red"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_icon_icon_redu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/com_tencent_ysdk_icon_icon"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/com_tencent_ysdk_icon_red"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_icon_icon_redd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/com_tencent_ysdk_icon_icon"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/com_tencent_ysdk_icon_red"
         android:visibility="invisible" />
 </RelativeLayout>
 
-<!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_icon_icon_view.xml -->

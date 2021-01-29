@@ -47,8 +47,6 @@ public class MiApplication {
         Log.e(TAG, appId);
         Log.e(TAG, appKey);
 
-        MiCommplatform.setResourceClass(application.getPackageName() + ".R");
-
         MiAppInfo appInfo = new MiAppInfo();
         appInfo.setAppId(appId);
         appInfo.setAppKey(appKey);

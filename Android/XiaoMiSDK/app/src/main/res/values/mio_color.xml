@@ -38,6 +38,7 @@
     <color name="text_color_white_100">#FFFFFFFF</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_black">#FF000000</color>
+    <color name="black_20_percent">#33000000</color>
 
     <color name="translucent_background">#00000000</color>
     <color name="color_button_window_close_blue">#33B4FF</color>
@@ -52,4 +53,7 @@
 
 
     <color name="text_colot_red_time">#FC5052</color>
+
+    <color name="color_payment_dialog_cancel_blue_nor">#FF33B4FF</color>
+
 </resources>

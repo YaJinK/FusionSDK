@@ -11,7 +11,8 @@
     <uses-permission android:name="com.xiaomi.permission.AUTH_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-    <application>
+    <application
+        android:usesCleartextTraffic="true">
 
         <!-- Xiaomi SDK Need -->
         <meta-data
@@ -38,30 +39,17 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" /> <!--不⽀持${applicationId}的请替换为包名-->
-        <service
-            android:name="com.xiaomi.gamecenter.push.GamePushService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="${applicationId}.MI_GAME_PUSH" />
-            </intent-filter>
-        </service>
-        <receiver
-            android:name="com.xiaomi.gamecenter.push.OnClickReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.xiaomi.hy.push.client.ONCLICK" />
-            </intent-filter>
-        </receiver>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!--不支持${applicationId}的请替换为包名-->
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:name="com.xiaomi.gamecenter.sdk.utils.MiFileProvider"
+            android:authorities="${applicationId}.mi_fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/sdk_file_paths" />
+                android:resource="@xml/mio_file_paths" />
         </provider>
 
         <activity
@@ -70,12 +58,39 @@
             android:excludeFromRecents="true"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
         <activity
             android:name="com.xiaomi.gamecenter.sdk.ui.notice.NoticeActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+        <activity
+            android:name="com.xiaomi.gamecenter.sdk.anti.ui.MiAntiAlertActivity"
+            android:configChanges="orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <data
+                    android:host="open_anti_alert"
+                    android:scheme="mioauthsdk" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.gamecenter.sdk.ui.MiPayAntiActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity android:name="com.xiaomi.gamecenter.sdk.ui.MiVerifyActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:screenOrientation="behind"/>
+
         <!-- Xiaomi SDK Need End-->
     </application>
 </manifest>

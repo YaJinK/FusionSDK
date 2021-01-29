@@ -29,5 +29,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/unity-classes.jar')
-    implementation files('libs/gamesdk-20190910.jar')
+    implementation files('libs/gamesdk-20200610.jar')
+    implementation files('libs/oppo-gamesdk-common.jar')
+    implementation files('libs/plugin-framework-sdk-1.0.4.jar')
+
+
 }

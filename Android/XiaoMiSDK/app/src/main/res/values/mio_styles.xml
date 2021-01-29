@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="checkBoxStyle">
-        <item name="android:button">@drawable/selector_float_tip_check</item>
+        <item name="android:button">@drawable/mio_selector_float_tip_check</item>
     </style>
 
     <style name="splashStyle" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
     </style>
+
     <style name="MioNoticeChcekBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/mio_selector_notice_checkbox</item>

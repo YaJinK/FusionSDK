@@ -8,3 +8,15 @@ FusionSDK.csproj
 FusionSDK.Editor.csproj
 FusionSDK.sln
 .vs/
+Unity.Analytics.DataPrivacy.csproj
+Unity.CollabProxy.Editor.csproj
+Unity.DocZh.Editor.csproj
+Unity.InternalAPIEngineBridge.024.csproj
+Unity.PackageManagerUI.Editor.csproj
+Unity.TextMeshPro.csproj
+Unity.TextMeshPro.Editor.csproj
+Unity.UIWidgets.csproj
+Unity.UIWidgets.Editor.csproj
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+obj/

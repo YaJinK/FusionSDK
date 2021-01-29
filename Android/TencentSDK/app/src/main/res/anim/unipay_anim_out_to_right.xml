@@ -6,4 +6,3 @@
         android:fromXDelta="0%p"
         android:toXDelta="100%p" />
 </set>
-<!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/anim/unipay_anim_out_to_right.xml -->
