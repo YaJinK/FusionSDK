@@ -182,8 +182,42 @@ namespace FusionSDK.Editor
             XmlNodeList children = channelApplicationNode.ChildNodes;
             for (int index = 0; index < children.Count; index++)
             {
-                XmlNode tempNode = mainManifest.ImportNode(children[index], true);
-                mainApplicationNode.AppendChild(tempNode);
+                // 自动替换 android:name 相同的 meta-data节点
+                if (children[index].HasChildNodes == false
+                    && null != children[index].Attributes
+                    && children[index].Attributes.Count == 2
+                    && "android:name".Equals(children[index].Attributes[0].Name)
+                    && "android:value".Equals(children[index].Attributes[1].Name))
+                {
+                    XmlNode sameNodeInMain = null;
+                    foreach (XmlNode mainNode in mainApplicationNode)
+                    {
+                        if (mainNode.HasChildNodes == false
+                            && null != mainNode.Attributes
+                            && mainNode.Attributes.Count == 2
+                            && "android:name".Equals(mainNode.Attributes[0].Name)
+                            && "android:value".Equals(mainNode.Attributes[1].Name)
+                            && mainNode.Attributes[0].Value.Equals(children[index].Attributes[0].Value))
+                        {
+                            sameNodeInMain = mainNode;
+                            break;
+                        }
+                    }
+                    if (null != sameNodeInMain)
+                    {
+                        sameNodeInMain.Attributes[1].Value = children[index].Attributes[1].Value;
+                    }
+                    else
+                    {
+                        XmlNode tempNode = mainManifest.ImportNode(children[index], true);
+                        mainApplicationNode.AppendChild(tempNode);
+                    }
+                }
+                else
+                {
+                    XmlNode tempNode = mainManifest.ImportNode(children[index], true);
+                    mainApplicationNode.AppendChild(tempNode);
+                }
             }
 
             mainManifest.Save(pluginDir + "AndroidManifest.xml");

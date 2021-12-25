@@ -3,9 +3,9 @@
     android:id="@+id/com_tencent_ysdk_icon_floatwindow"
     android:layout_width="54dp"
     android:layout_height="match_parent"
-    android:background="#0A0B16"
     android:gravity="center_horizontal"
     android:orientation="vertical">
+    <!-- 由于要适配刘海屏，因此，为了风格统一，原先relativeLayout设置背景颜色的地方移动到floatMenuView中进行动态设置 -->
 
     <ImageView
         android:id="@+id/com_tencent_ysdk_icon_xiaoxi_icon"

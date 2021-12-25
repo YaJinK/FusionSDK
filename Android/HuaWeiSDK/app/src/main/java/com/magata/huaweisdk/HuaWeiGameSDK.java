@@ -1,7 +1,9 @@
 package com.magata.huaweisdk;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.ConnectivityManager;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.common.ApiException;
 import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.IapApiException;
 import com.huawei.hms.iap.entity.InAppPurchaseData;
@@ -21,9 +24,16 @@ import com.huawei.hms.iap.entity.OwnedPurchasesReq;
 import com.huawei.hms.iap.entity.OwnedPurchasesResult;
 import com.huawei.hms.iap.entity.PurchaseIntentReq;
 import com.huawei.hms.iap.entity.PurchaseIntentResult;
+import com.huawei.hms.jos.AntiAddictionCallback;
+import com.huawei.hms.jos.AppParams;
 import com.huawei.hms.jos.AppUpdateClient;
 import com.huawei.hms.jos.JosApps;
 import com.huawei.hms.jos.JosAppsClient;
+import com.huawei.hms.jos.JosStatusCodes;
+import com.huawei.hms.jos.games.Games;
+import com.huawei.hms.jos.games.PlayersClient;
+import com.huawei.hms.jos.games.player.PlayerExtraInfo;
+import com.huawei.hms.support.account.request.AccountAuthParams;
 import com.huawei.hms.support.api.client.Status;
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager;
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams;
@@ -50,48 +60,89 @@ public class HuaWeiGameSDK {
     }
 
     public static void initSDK(){
+        AccountAuthParams params = AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM_GAME;
         JosAppsClient appsClient = JosApps.getJosAppsClient(UnityPlayer.currentActivity);
-        appsClient.init();
-
-        final AppUpdateClient client = JosApps.getAppUpdateClient(UnityPlayer.currentActivity);
-        client.checkAppUpdate(UnityPlayer.currentActivity, new CheckUpdateCallBack(){
+        Task<Void> initTask;
+        initTask = appsClient.init(new AppParams(params, new AntiAddictionCallback() {
             @Override
-            public void onUpdateInfo(Intent intent) {
-                if (intent != null) {
-                    // 获取更新状态码， Default_value为取不到status时默认的返回码，由应用自行决定
-                    int status = intent.getIntExtra(UpdateKey.STATUS, 4444);
-                    // 错误码，建议打印
-                    int rtnCode = intent.getIntExtra(UpdateKey.FAIL_CODE, 4444);
-                    // 失败信息，建议打印
-                    String rtnMessage = intent.getStringExtra(UpdateKey.FAIL_REASON);
-                    Serializable info = intent.getSerializableExtra(UpdateKey.INFO);
-                    //可通过获取到的info是否属于ApkUpgradeInfo类型来判断应用是否有更新
-                    if (info instanceof ApkUpgradeInfo) {
-                        // 这里调用showUpdateDialog接口拉起更新弹窗，由于demo有单独拉起弹窗按钮，所以不在此调用，详见checkUpdatePop()方
-                        Log.d(TAG, "There is a new update");
-                        ApkUpgradeInfo apkUpgradeInfo = (ApkUpgradeInfo) info;
-                        client.showUpdateDialog(UnityPlayer.currentActivity, apkUpgradeInfo, true);
+            public void onExit() {
+                //在此处实现游戏防沉迷功能，如保存游戏、调用帐号退出接口
+                new AlertDialog.Builder(UnityPlayer.currentActivity)
+                        .setTitle("防沉迷")
+                        .setMessage("根据华为防沉迷规定，您已无法进行游戏，点击确定退出游戏。")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                UnityPlayer.currentActivity.finish();
+                            }
+                        })
+                        .show();
+            }
+        }));
+        initTask.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                final AppUpdateClient client = JosApps.getAppUpdateClient(UnityPlayer.currentActivity);
+                client.checkAppUpdate(UnityPlayer.currentActivity, new CheckUpdateCallBack(){
+                    @Override
+                    public void onUpdateInfo(Intent intent) {
+                        if (intent != null) {
+                            // 获取更新状态码， Default_value为取不到status时默认的返回码，由应用自行决定
+                            int status = intent.getIntExtra(UpdateKey.STATUS, 4444);
+                            // 错误码，建议打印
+                            int rtnCode = intent.getIntExtra(UpdateKey.FAIL_CODE, 4444);
+                            // 失败信息，建议打印
+                            String rtnMessage = intent.getStringExtra(UpdateKey.FAIL_REASON);
+                            Serializable info = intent.getSerializableExtra(UpdateKey.INFO);
+                            //可通过获取到的info是否属于ApkUpgradeInfo类型来判断应用是否有更新
+                            if (info instanceof ApkUpgradeInfo) {
+                                // 这里调用showUpdateDialog接口拉起更新弹窗，由于demo有单独拉起弹窗按钮，所以不在此调用，详见checkUpdatePop()方
+                                Log.d(TAG, "There is a new update");
+                                ApkUpgradeInfo apkUpgradeInfo = (ApkUpgradeInfo) info;
+                                client.showUpdateDialog(UnityPlayer.currentActivity, apkUpgradeInfo, true);
+                            }
+                            Log.d(TAG, "onUpdateInfo status: " + status + ", rtnCode: " + rtnCode + ", rtnMessage: " + rtnMessage);
+                        }
                     }
-                    Log.d(TAG, "onUpdateInfo status: " + status + ", rtnCode: " + rtnCode + ", rtnMessage: " + rtnMessage);
+
+                    @Override
+                    public void onMarketInstallInfo(Intent intent) {
+                    }
+
+                    @Override
+                    public void onMarketStoreError(int i) {
+                        Log.d(TAG, "onMarketStoreError: " + i);
+                    }
+
+                    @Override
+                    public void onUpdateStoreError(int i) {
+                        Log.d(TAG, "onUpdateStoreError: " + i);
+
+                    }
+                });
+                receiver.onInitSucc();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG,"init failed, " + e.getMessage());
+                if (e instanceof ApiException) {
+                    ApiException apiException = (ApiException) e;
+                    int statusCode = apiException.getStatusCode();
+                    Log.e(TAG,"init failed, code: " + statusCode);
+                    // 错误码为7401时表示用户未同意华为联运隐私协议
+                    if (statusCode == JosStatusCodes.JOS_PRIVACY_PROTOCOL_REJECTED) {
+                        Log.d(TAG, "has reject the protocol");
+                        //在此处实现退出游戏
+                        UnityPlayer.currentActivity.finish();
+                    } else if (statusCode == 907135003) {
+                        Log.d(TAG, "用户取消安装华为移动服务");
+                        initSDK();
+                    }
                 }
             }
 
-            @Override
-            public void onMarketInstallInfo(Intent intent) {
-            }
-
-            @Override
-            public void onMarketStoreError(int i) {
-                Log.d(TAG, "onMarketStoreError: " + i);
-            }
-
-            @Override
-            public void onUpdateStoreError(int i) {
-                Log.d(TAG, "onUpdateStoreError: " + i);
-
-            }
         });
-        receiver.onInitSucc();
     }
 
     public static void saveUserInfo(String server, String level, String name, String sociaty){
@@ -99,7 +150,7 @@ public class HuaWeiGameSDK {
     }
 
     public static void login(){
-        HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM_GAME).createParams();
+        HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM_GAME).setAuthorizationCode().createParams();
         HuaweiIdAuthService service = HuaweiIdAuthManager.getService(UnityPlayer.currentActivity, authParams);
         UnityPlayer.currentActivity.startActivityForResult(service.getSignInIntent(), 8888);
     }
@@ -189,7 +240,40 @@ public class HuaWeiGameSDK {
     }
 
     public static void getCertificationInfo() {
-
+        PlayersClient client = Games.getPlayersClient(UnityPlayer.currentActivity);
+        Task<PlayerExtraInfo> task = client.getPlayerExtraInfo(null);
+        task.addOnSuccessListener(new OnSuccessListener<PlayerExtraInfo>() {
+            @Override
+            public void onSuccess(PlayerExtraInfo extra) {
+                if (extra != null) {
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("IsVerify", extra.getIsRealName());
+                        json.put("IsAdult", extra.getIsAdult());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    HuaWeiGameSDK.GetReceiver().onGetCertificationInfoSucc(json.toString());
+                } else {
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("IsVerify", true);
+                        json.put("IsAdult", true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    HuaWeiGameSDK.GetReceiver().onGetCertificationInfoSucc(json.toString());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                if (e instanceof ApiException) {
+                    String result = "rtnCode:" + ((ApiException) e).getStatusCode();
+                    receiver.onGetCertificationInfoFailed(result);
+                }
+            }
+        });
     }
 
     public static void checkMissingOrder(int productType) {

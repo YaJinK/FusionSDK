@@ -125,11 +125,6 @@
                 android:resource="@xml/sdk_file_paths" />
         </provider>
 
-        <!-- sdk service -->
-        <service
-            android:name="cn.gundam.sdk.shell.service.ProxyService"
-            android:exported="true"
-            android:process=":bgservice" />
         <!-- sdk service end -->
         <activity
             android:name="cn.uc.paysdk.SDKActivity"

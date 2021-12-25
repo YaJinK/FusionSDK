@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4A4A4A"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false">
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:id="@+id/com_tencent_ysdk_debug_config_first_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/ysdk_debug_domain_title"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/ysdk_debug_domain_description"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                <TextView
+                        android:id="@+id/com_tencent_ysdk_debug_config_current_domain_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/ysdk_debug_domain_config"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/com_tencent_ysdk_debug_config_second_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/com_tencent_ysdk_debug_config_first_layout"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/com_tencent_ysdk_debug_config_formal_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/ysdk_debug_switch_formal"
+                        android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+                        android:textSize="15sp" />
+
+                <Button
+                        android:id="@+id/com_tencent_ysdk_debug_config_test_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/ysdk_debug_switch_test"
+                        android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+                        android:textSize="15sp" />
+
+                <Button
+                        android:id="@+id/com_tencent_ysdk_debug_config_clear_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/ysdk_debug_clear_config"
+                        android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+                        android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/com_tencent_ysdk_debug_config_third_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/com_tencent_ysdk_debug_config_second_layout"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/ysdk_debug_info_title"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+
+                <TextView
+                        android:id="@+id/com_tencent_ysdk_debug_config_info_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                <Button
+                        android:id="@+id/com_tencent_ysdk_debug_config_copy_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/ysdk_debug_copy_info"
+                        android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+                        android:textSize="15sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+            android:id="@+id/com_tencent_ysdk_debug_config_close_button"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/com_tencent_ysdk_icon_h5_xx" />
+    <TextView
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
+            android:padding="5dp"
+            android:layout_toLeftOf="@+id/com_tencent_ysdk_debug_config_close_button"
+            android:layout_toStartOf="@+id/com_tencent_ysdk_debug_config_close_button"
+            android:id="@+id/com_tencent_ysdk_debug_config_remove_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ysdk_debug_remove_debug_icon"
+            android:textColor="@drawable/com_tencent_ysdk_icon_close_text_color"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:background="@drawable/com_tencent_ysdk_icon_close_text_bg"/>
+
+</RelativeLayout>

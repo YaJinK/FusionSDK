@@ -479,10 +479,12 @@ namespace FusionSDK.Core
                 return;
 #if FUSIONSDK_UC
             Debug.LogWarning("该渠道客户端无防沉迷接口。");
+            FusionCallback.Instance.onGetCertificationInfoFailed("该渠道客户端无防沉迷接口。");
 #elif FUSIONSDK_HUAWEI
             sdkClass.CallStatic("getCertificationInfo");
 #elif FUSIONSDK_MI
             Debug.LogWarning("该渠道客户端无防沉迷接口。");
+            FusionCallback.Instance.onGetCertificationInfoFailed("该渠道客户端无防沉迷接口。");
 #elif FUSIONSDK_VIVO
             sdkClass.CallStatic("getCertificationInfo");
 #elif FUSIONSDK_OPPO
@@ -490,9 +492,11 @@ namespace FusionSDK.Core
 #elif FUSIONSDK_MEIZU
             sdkClass.CallStatic("getCertificationInfo");
 #elif FUSIONSDK_QIHOO
-            Debug.LogWarning("敬请期待！"); //服务器调用接口获取
+            Debug.LogWarning("该渠道客户端无防沉迷接口。"); // 有服务器接口
+            FusionCallback.Instance.onGetCertificationInfoFailed("该渠道客户端无防沉迷接口。");
 #elif FUSIONSDK_TENCENT
-            Debug.LogWarning("敬请期待！"); 
+            Debug.LogWarning("该渠道客户端无防沉迷接口。");
+            FusionCallback.Instance.onGetCertificationInfoFailed("该渠道客户端无防沉迷接口。");
 #endif
         }
 

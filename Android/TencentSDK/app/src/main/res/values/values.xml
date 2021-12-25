@@ -14,6 +14,7 @@
     <color name="download_btn_stroke_disable">#e5e5e5</color>
     <color name="download_btn_stroke_normal">#81d5ff</color>
     <color name="floating_winddow_result_text_color_highlight">#f19d18</color>
+    <color name="red">#DC143C</color>
     <color name="white">#FFFFFF</color>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -62,6 +63,16 @@
     <string name="icon_close_window_title">确定要关闭悬浮球</string>
     <string name="icon_move_close">拖到此处隐藏</string>
     <string name="message_text">消息</string>
+    <string name="ysdk_debug_clear_config">清除环境配置</string>
+    <string name="ysdk_debug_copy_info">一键复制</string>
+    <string name="ysdk_debug_domain_config">(2) 切换测试环境（重启应用后生效）：</string>
+    <string name="ysdk_debug_domain_description">(1) 当前测试环境(ysdk.qq.com为正式环境；ysdktest.qq.com为沙箱环境)：</string>
+    <string name="ysdk_debug_domain_title">1、环境配置</string>
+    <string name="ysdk_debug_icon_name">调试页面</string>
+    <string name="ysdk_debug_info_title">2、相关信息</string>
+    <string name="ysdk_debug_remove_debug_icon">移除调试页面悬浮球</string>
+    <string name="ysdk_debug_switch_formal">切换至正式环境</string>
+    <string name="ysdk_debug_switch_test">切换至沙箱环境</string>
     <style name="AppTheme">
         <!-- Customize your theme here. -->
     </style>

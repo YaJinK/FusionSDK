@@ -101,6 +101,39 @@
             android:exported="true"
             >
         </activity-alias>
-    </application>
+
+        <provider
+            android:name="com.tencent.ysdk.framework.YSDKInitProvider"
+            android:authorities="${applicationId}.ysdk.ysdkinitprovider"
+            android:exported="false" />
+
+        <activity
+        android:name="com.tencent.ysdk.module.user.impl.freelogin.FreeLoginInfoActivity"
+        android:configChanges="orientation|screenSize|keyboardHidden"
+        android:exported="true"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        <!-- TODO GAME 这里为解析外部传入的登录信息，为云设备或者沙盒游戏宿主所调用,这里tencentysdk${applicationId}中tencentysdk的后缀是应用包名，如tencentysdkcom.tencent.tmgp.yybtestsdk -->
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="tencentysdk${applicationId}" />
+        </intent-filter>
+    </activity>
+    <!-- TODO GAME SDK接入YSDK登陆接入配置 END -->
+        <!-- TODO 鉴权SDK 接入配置 START -->
+        <activity
+            android:name="com.tencent.qqdownloader.pay.QQDownloaderEntryActivity"
+            android:exported="true" />
+
+        <meta-data
+            android:name="YSDK_AUTH_KEY"
+            android:value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsKX4kg6T32qn8uHc6j9AwMeQzpUW3hh6o8WiBJi9wlx0pWWRLoqdQuhoUPGpfrdVyt/iEnlvF4fmCkk82bJxXv4x2QRqR4tq3Li5YODzk/xLlQsa3F9nPb+iadqdQJfm6n53ts3uxkApl3gMURuw8SfoFuzuB3mpYHFO+DXQ7BSU2N/+Sdjb6xuOPWHrk9kXSo+h2VTkCwYcpEVC505T0MoA4PtX3GwsO7+lSJrRwuwzXi0eBi5evV57g9WhNnsZLfHTYqC43EGfbj0+/rNXQgz2AfJ78y5jW0am2WMBaO4Sao/acYHu/e+PSqr+fvolmbB1cFLCkCFnF6jBMuk8AQIDAQAB" />
+        <meta-data
+            android:name="YSDK_AUTH_KEY_VERSION"
+            android:value="0" />
+        <!-- TODO 鉴权SDK 接入配置 END -->
+</application>
 
 </manifest>

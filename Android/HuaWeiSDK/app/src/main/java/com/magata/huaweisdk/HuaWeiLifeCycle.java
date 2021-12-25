@@ -11,6 +11,7 @@ import com.huawei.hms.common.ApiException;
 import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.entity.OrderStatusCode;
 import com.huawei.hms.iap.entity.PurchaseResultInfo;
+
 import com.huawei.hms.jos.games.Games;
 import com.huawei.hms.jos.games.PlayersClient;
 import com.huawei.hms.jos.games.buoy.BuoyClient;
@@ -39,7 +40,7 @@ public class HuaWeiLifeCycle{
             //调用getPlayersClient方法初始化
             PlayersClient client = Games.getPlayersClient(UnityPlayer.currentActivity);
             //获取玩家信息
-            Task<Player> task = client.getGamePlayer();
+            Task<Player> task = client.getGamePlayer(HuaWeiApplication.isGetPlayerId);
             task.addOnSuccessListener(new OnSuccessListener<Player>() {
                 @Override
                 public void onSuccess(Player player) {
@@ -47,9 +48,25 @@ public class HuaWeiLifeCycle{
                     String displayName = player.getDisplayName();
                     String unionId = player.getUnionId();
                     String openId = player.getOpenId();
+
                     try {
                         JSONObject json = new JSONObject();
                         json.put("accessToken", accessToken);
+                        if(HuaWeiApplication.isGetPlayerId == true){
+                            String playerId = player.getPlayerId();
+                            String ts = player.getSignTs();
+                            String playerSSign = player.getPlayerSign();
+                            String playerLevel =  Integer.toString(player.getLevel());
+                            String openIdSign = player.getOpenIdSign();
+
+                            json.put("playerId", playerId);
+                            json.put("ts", ts);
+                            json.put("playerSSign", playerSSign);
+                            json.put("playerLevel", playerLevel);
+                            json.put("openIdSign", openIdSign);
+                            json.put("openId", openId);
+
+                        }
                         HuaWeiGameSDK.GetReceiver().onLoginSucc(json.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();

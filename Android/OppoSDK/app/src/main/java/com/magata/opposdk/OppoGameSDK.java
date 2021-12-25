@@ -161,14 +161,8 @@ public class OppoGameSDK {
                 try{
                     int age = Integer.parseInt(resultMsg);
                     JSONObject jsonObject = new JSONObject();
-
-                    if (age < 18){
-                        //已实名未成年，CP开始防沉迷处理
-                        jsonObject.put("hasAdault", 0);
-                    } else {
-                        //已实名已成年，尽情玩游戏
-                        jsonObject.put("hasAdault", 1);
-                    }
+                    jsonObject.put("IsVerify", true);
+                    jsonObject.put("IsAdult", age >= 18);
                     receiver.onGetCertificationInfoSucc(jsonObject.toString());
                 }catch (Exception e){
                     e.printStackTrace();

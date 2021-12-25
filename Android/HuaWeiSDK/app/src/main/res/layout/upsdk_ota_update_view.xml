@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,11 +12,11 @@
         <ScrollView
             android:id="@+id/scroll_layout"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:layout_weight="1"
-            android:layout_height="0dp">
+            android:scrollbarStyle="outsideOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,54 +27,55 @@
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
                     android:layout_height="16dp" />
+
                 <LinearLayout
                     android:id="@+id/name_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/upsdk_margin_xs">
+                    android:layout_marginBottom="@dimen/upsdk_margin_xs"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/upsdk_ota_app_name"
                         android:textColor="@color/upsdk_color_gray_10"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:text="@string/upsdk_ota_app_name" />
+                        android:textSize="@dimen/upsdk_master_subtitle" />
 
                     <TextView
                         android:id="@+id/name_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
-                        android:layout_marginLeft="@dimen/upsdk_margin_m"
                         android:layout_marginStart="@dimen/upsdk_margin_m"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:fontFamily="HwChinese-medium"  />
+                        android:layout_marginLeft="@dimen/upsdk_margin_m"
+                        android:fontFamily="HwChinese-medium"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_subtitle" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/version_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/upsdk_margin_xs">
+                    android:layout_marginBottom="@dimen/upsdk_margin_xs"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/upsdk_app_version"
                         android:textColor="@color/upsdk_color_gray_10"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:text="@string/upsdk_app_version" />
+                        android:textSize="@dimen/upsdk_master_subtitle" />
 
                     <TextView
                         android:id="@+id/version_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
-                        android:layout_marginLeft="@dimen/upsdk_margin_m"
                         android:layout_marginStart="@dimen/upsdk_margin_m"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:fontFamily="HwChinese-medium"  />
+                        android:layout_marginLeft="@dimen/upsdk_margin_m"
+                        android:fontFamily="HwChinese-medium"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_subtitle" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,29 +87,29 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
                         android:text="@string/upsdk_app_size"
+                        android:textColor="@color/upsdk_color_gray_10"
                         android:textSize="@dimen/upsdk_master_subtitle" />
 
                     <TextView
                         android:id="@+id/appsize_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
-                        android:layout_marginLeft="@dimen/upsdk_margin_m"
                         android:layout_marginStart="@dimen/upsdk_margin_m"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:fontFamily="HwChinese-medium" />
+                        android:layout_marginLeft="@dimen/upsdk_margin_m"
+                        android:fontFamily="HwChinese-medium"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_subtitle" />
 
                     <TextView
                         android:id="@+id/allsize_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
-                        android:layout_marginLeft="@dimen/upsdk_margin_m"
                         android:layout_marginStart="@dimen/upsdk_margin_m"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:fontFamily="HwChinese-medium" />
+                        android:layout_marginLeft="@dimen/upsdk_margin_m"
+                        android:fontFamily="HwChinese-medium"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_subtitle" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,23 +121,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
                         android:layout_marginTop="@dimen/upsdk_margin_l"
-                        android:textAlignment="viewStart"
+                        android:gravity="start"
                         android:text="@string/upsdk_detail"
-                        android:textSize="@dimen/upsdk_master_subtitle"
-                        android:gravity="start" />
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_subtitle" />
 
                     <TextView
                         android:id="@+id/content_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/upsdk_color_gray_10"
                         android:layout_marginTop="@dimen/upsdk_margin_m"
-                        android:textAlignment="viewStart"
-                        android:textSize="@dimen/upsdk_master_body_2"
+                        android:gravity="start"
                         android:lineSpacingMultiplier="1.1"
-                        android:gravity="start" />
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/upsdk_color_gray_10"
+                        android:textSize="@dimen/upsdk_master_body_2" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

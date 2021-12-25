@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <files-path name="." path="."/>
 
-    <external-path name="." path="."/>
+    <files-path
+        name="inner-files"
+        path="." />
 
-    <external-files-path name="." path="."/>
+    <external-path
+        name="."
+        path="ucgamesdk" />
 
-    <external-cache-path name="." path="ucgamesdk"/>
+    <external-files-path
+        name="ucgamesdk"
+        path="ucgamesdk" />
+
+    <external-cache-path
+        name="ucgamesdk-cache"
+        path="ucgamesdk" />
+
 </paths>

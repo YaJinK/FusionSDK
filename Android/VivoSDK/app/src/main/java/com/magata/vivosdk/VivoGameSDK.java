@@ -150,16 +150,11 @@ public class VivoGameSDK {
                 try {
 
                     if (isRealName) {
-                        jsonObject.put("hasRegistered", 1);
-                        if (age < 18) {
-                            jsonObject.put("hasAdault", 0);
-                        } else {
-                            jsonObject.put("hasAdault", 1);
-                        }
-                        Log.d(TAG, "已经实名认证 Age: " + age);
+                        jsonObject.put("IsVerify", true);
+                        jsonObject.put("IsAdult", age >= 18);
                     } else {
-                        jsonObject.put("hasRegistered", 0);
-                        jsonObject.put("hasAdault", 0);
+                        jsonObject.put("IsVerify", false);
+                        jsonObject.put("IsAdult", false);
                         Log.d(TAG, "未实名认证");
                     }
                 } catch (JSONException e) {

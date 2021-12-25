@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fafafc"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageButton
+            android:id="@+id/midas_header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:contentDescription="返回"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:visibility="visible"
+            android:src="@drawable/unipay_icon_return" />
+
+        <ImageButton
+            android:id="@+id/midas_header_close"
+            android:layout_toRightOf="@id/midas_header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:contentDescription="关闭"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/unipay_icon_close" />
+
+        <TextView
+            android:id="@+id/midas_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:textColor="#000000"
+            android:text="页面头" />
+
+        <ImageButton
+            android:id="@+id/midas_header_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:contentDescription="刷新"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/unipay_icon_refresh" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_height="1px"
+        android:layout_width="match_parent"
+        android:background="#e0e0e0"/>
+
+</LinearLayout>

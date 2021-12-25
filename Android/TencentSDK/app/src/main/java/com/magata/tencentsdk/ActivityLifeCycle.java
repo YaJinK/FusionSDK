@@ -37,7 +37,6 @@ public class ActivityLifeCycle {
     private static int mAntiMode = 0;
 
     public void onCreate(Activity activity){
-        YSDKApi.onCreate(activity);
         YSDKApi.setUserListener(new UserListener() {
             @Override
             public void OnLoginNotify(final UserLoginRet userLoginRet) {
@@ -197,16 +196,12 @@ public class ActivityLifeCycle {
     public void onStart(Activity activity){
     }
     public void onResume(Activity activity){
-        YSDKApi.onResume(activity);
     }
     public void onPause(Activity activity){
-        YSDKApi.onPause(activity);
     }
     public void onStop(Activity activity){
-        YSDKApi.onStop(activity);
     }
     public void onReStart(Activity activity){
-        YSDKApi.onRestart(activity);
     }
     public void onActivityResult (Activity activity,int requestCode, int resultCode, Intent data){
         YSDKApi.onActivityResult(requestCode, resultCode,data);
@@ -216,10 +211,8 @@ public class ActivityLifeCycle {
         }
     }
     public void onNewIntent (Activity activity,Intent intent){
-        YSDKApi.handleIntent(intent);
     }
     public void onDestory (Activity activity){
-        YSDKApi.onDestroy(activity);
         YSDKApi. setAntiAddictGameEnd();
     }
 

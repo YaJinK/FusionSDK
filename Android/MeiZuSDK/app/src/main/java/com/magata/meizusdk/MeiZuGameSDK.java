@@ -131,7 +131,7 @@ public class MeiZuGameSDK {
     }
 
 
-    private  static Bundle buildButBundle(String appId,String appKey,String appSecret,String payInfo) throws JSONException {
+    private  static Bundle buildButBundle(String payInfo) throws JSONException {
         JSONObject payObj = new JSONObject(payInfo);
 
         String orderId = payObj.getString("cp_order_id"); // cp_order_id (不能为空)
@@ -162,8 +162,7 @@ public class MeiZuGameSDK {
 
     public static void pay(String payInfo) throws JSONException {
         JSONObject payObj = new JSONObject(payInfo);
-        String appSecret = payObj.getString("appSecret");
-        Bundle  bundle =  buildButBundle(appId,appKey,appSecret,payInfo);
+        Bundle  bundle =  buildButBundle(payInfo);
         MzGameCenterPlatform.payOnline(UnityPlayer.currentActivity, bundle, new MzPayListener() {
             @Override
             public void onPayResult(int code, Bundle info, String errorMsg) {
@@ -200,13 +199,17 @@ public class MeiZuGameSDK {
             @Override
             public void onSuccess(int code, MzAuthInfo authinfo) {
                 JSONObject jsonObject = new JSONObject();
+
                 try {
 
                 if (code == MzAuthenticationCode.ALREADY_AUTHENTICATED) {
                     Log.d(TAG, "已经实名认证");
-                    jsonObject.put("hasAdault", 1);
+                    jsonObject.put("IsVerify", true);
+                    jsonObject.put("IsAdult", authinfo.getAge() >= 18);
                 } else if (code == MzAuthenticationCode.NO_AUTHENTICATION) {
-                    jsonObject.put("hasAdault", 0);
+                    jsonObject.put("IsVerify", false);
+                    jsonObject.put("IsAdult", false);
+
                     Log.d(TAG, "未实名认证");
                 }
                 } catch (JSONException e) {

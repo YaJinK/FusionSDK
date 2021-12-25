@@ -2,5 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application >
       <!-- FusionSDK/Configs/AndroidAssets/HuaWei/assets/agconnect-services 文件替换成自己项目的 -->
+	  <meta-data
+            android:name="com.magata.huaweisdk.isgetplayerid"
+            android:value="#[isGetPlayerId]">
+      </meta-data>
     </application>
 </manifest>

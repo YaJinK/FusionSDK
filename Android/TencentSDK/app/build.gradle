@@ -26,6 +26,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/unity-classes.jar')
-    implementation files('libs/YSDK_Android_1.6.8_e278214.jar')
-    implementation (name: 'FusionUtil', ext: 'aar')
+    implementation(name: 'FusionUtil', ext: 'aar')
+    implementation files('libs/YSDK_Android_1.7.14_245ce36.jar')
 }

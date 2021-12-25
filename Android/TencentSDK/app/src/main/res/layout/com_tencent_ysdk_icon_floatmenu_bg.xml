@@ -6,32 +6,30 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_icon_movetoremove_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:layout_marginBottom="53dp"
-        android:orientation="vertical">
+        android:src="@drawable/com_tencent_ysdk_icon_remove" />
 
-        <ImageView
-            android:id="@+id/com_tencent_ysdk_icon_movetoremove_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/com_tencent_ysdk_icon_remove"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:id="@+id/com_tencent_ysdk_icon_close_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/icon_move_close"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="visible"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+    <!-- 之前的逻辑包一层linearLayout主要是为了处理textView与imageView的位置问题，但这样处理会导致
+     linearLayout的大小计算有问题，而且多包一层显得没有必要,按照原先的逻辑，将textView设置成-43dp就
+     可以实现原先的效果-->
+    <TextView
+        android:id="@+id/com_tencent_ysdk_icon_close_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/com_tencent_ysdk_icon_movetoremove_icon"
+        android:layout_marginTop="-43dp"
+        android:text="@string/icon_move_close"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:gravity="center_horizontal"
+        android:visibility="visible" />
+    <!--    </LinearLayout>-->
 
 
 </RelativeLayout>

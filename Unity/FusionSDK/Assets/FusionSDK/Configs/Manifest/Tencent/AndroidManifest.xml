@@ -5,7 +5,12 @@
             android:name="com.magata.tencentsdk.ysdkEnv"
             android:value="0">  <!-->1代表正式，0代表测试<-->
         </meta-data>
-
+      <meta-data
+                android:name="MAIN_ACTIVITY"
+                android:value="${applicationId}.MainActivity">
+        <!-->MainActivity 需要改为自己的主activity名字<-->
+      </meta-data>
+                  
          <!-- TODO GAME SDK QQ接入配置 START -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

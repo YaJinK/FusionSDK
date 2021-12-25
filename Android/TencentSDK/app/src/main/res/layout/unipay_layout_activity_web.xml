@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:gravity="center">
+
+
+    <LinearLayout
+        android:id="@+id/unipay_id_webview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+
+        <include
+            android:id="@+id/midas_header_layout"
+            layout="@layout/unipay_view_header"
+            android:visibility="gone" />
+
+        <WebView
+            android:id="@+id/unipay_id_WebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

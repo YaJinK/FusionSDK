@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application >
       <!-- android:taskAffinity 填上游戏的包名，如游戏包名为cn.uc.gamesdk.demo，则下面填 cn.uc.gamesdk.demo.diff -->
-      <!-- data android:scheme 里填上”ag+当前游戏的gameId”,如游戏ID是123456,则填上ag123456 -->
+      <!-- data android:scheme 里填上”ng+当前游戏的gameId”,如游戏ID是123456,则填上ng123456 -->
       <activity
           android:name="cn.uc.gamesdk.activity.PullupActivity"
           android:excludeFromRecents="true"

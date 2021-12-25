@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="c_buoycircle_auto_hide_notice" priority="LT">Drag here to hide</string>
-    <string name="c_buoycircle_cancel" priority="LT">CANCEL</string>
-    <string name="c_buoycircle_confirm" priority="LT">OK</string>
-    <string name="c_buoycircle_floatwindow_click_fail_toast" priority="translator">Enable Secondary launch for AppGallery in Phone Manager (Optimizer) or Settings.</string>
-    <string name="c_buoycircle_hide_guide_btn_cancel" priority="LT">CANCEL</string>
-    <string name="c_buoycircle_hide_guide_btn_confirm" priority="LT">HIDE</string>
-    <string name="c_buoycircle_hide_guide_content_nosensor" priority="LT">After balloons are hidden, you will need to relaunch the app to show them again.</string>
-    <string name="c_buoycircle_hide_guide_content_sensor" priority="LT">After balloons are hidden, flip your device to show them again.</string>
-    <string name="c_buoycircle_hide_guide_noremind" priority="LT">Don\'t remind me again</string>
-    <string name="c_buoycircle_hide_guide_title" priority="LT">Hide balloons</string>
-    <string name="c_buoycircle_install" priority="LT">INSTALL</string>
-    <string name="hms_game_achievement_finish_notice" priority="LT">%1$s unlocked</string>
-    <string name="hms_game_check_update_failed_content" priority="LT">Unable to access. This service requires the latest version of AppAssistant.</string>
-    <string name="hms_game_check_update_success_content" priority="LT">To use this service, install the latest version of AppAssistant (%1$s MB).</string>
-    <string name="hms_game_login_notice" priority="LT">Welcome %1$s</string>
-
     <string name="hms_abort" priority="translator">Stop</string>
     <string name="hms_abort_message" priority="translator">Stop downloading?</string>
     <string name="hms_bindfaildlg_message" priority="LT">%1$s is unable to use HMS Core. Launch Optimizer (Phone Manager) or go to Settings, enable all permissions for %2$s (including auto-launch and secondary launch), and try again.</string>
@@ -30,38 +14,37 @@
     <string name="hms_downloading_loading" priority="LT">Downloading</string>
     <string name="hms_install" priority="translator">Install</string>
     <string name="hms_install_message" priority="translator">HMS Core must be installed to use this feature. Install?</string>
+    <string name="hms_is_spoof" priority="LT">It appears that you have an unofficial version of HMS Core (%1$s) installed on your device. Please uninstall HMS Core from Settings and return to this app to install the official version.</string>
     <string name="hms_retry" priority="translator">Retry</string>
+    <string name="hms_spoof_hints" priority="LT">Note</string>
     <string name="hms_update" priority="translator">Update</string>
     <string name="hms_update_continue" priority="LT">Download</string>
     <string name="hms_update_message" priority="translator">Update to the latest version of HMS Core to use this feature. Update now?</string>
     <string name="hms_update_message_new" priority="LT">This service requires the latest version of the following app:\n\n%1$s</string>
     <string name="hms_update_nettype" priority="LT">No Wi-Fi connection. Download using mobile data?</string>
     <string name="hms_update_title" priority="translator">HMS Core</string>
-
-    <color name="upsdk_blue_text_007dff">#007dff</color>
-    <color name="upsdk_category_button_select_pressed">#0076f2</color>
+    <style name="Base_Translucent" parent="@android:style/Theme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <color name="upsdk_color_gray_1">#F2F2F2</color>
     <color name="upsdk_color_gray_10">#191919</color>
     <color name="upsdk_color_gray_7">#808080</color>
-    <color name="upsdk_white">#FFFFFFFF</color>
     <dimen name="upsdk_margin_l">16dp</dimen>
     <dimen name="upsdk_margin_m">8dp</dimen>
     <dimen name="upsdk_margin_xs">2dp</dimen>
     <dimen name="upsdk_master_body_2">13sp</dimen>
     <dimen name="upsdk_master_subtitle">15sp</dimen>
-    <string name="upsdk_app_dl_installing" priority="LT">Downloading AppGallery</string>
     <string name="upsdk_app_download_info_new" priority="LT">Install</string>
     <string name="upsdk_app_download_installing" priority="translator">Downloading %s…</string>
     <string name="upsdk_app_size" priority="LT">Size</string>
     <string name="upsdk_app_version" priority="LT">Version</string>
     <string name="upsdk_appstore_install" priority="translator">%s is required to update this app. Install now?</string>
-    <string name="upsdk_apptouch_store_url" translatable="false">https://store-at-dre.hispace.dbankcloud.com/hwmarket/api/</string>
     <string name="upsdk_cancel" priority="LT">Cancel</string>
     <string name="upsdk_checking_update_prompt" priority="LT">Checking for updates…</string>
     <string name="upsdk_choice_update" priority="LT">Update available. Please download and install the latest version.</string>
-    <string name="upsdk_connect_server_fail_prompt_toast" priority="translator">Unable to connect to server. Please try again later.</string>
     <string name="upsdk_detail" priority="LT">Details</string>
     <string name="upsdk_getting_message_fail_prompt_toast" priority="translator">Unable to retrieve information. Please try again later.</string>
+    <string name="upsdk_mobile_dld_warn" priority="translator">You\'re currently connected to a mobile network. Downloading now will use %1$s of data.</string>
     <string name="upsdk_no_available_network_prompt_toast" priority="translator">No Internet connection. Please check your network settings.</string>
     <string name="upsdk_ota_app_name" priority="LT">App</string>
     <string name="upsdk_ota_cancel" priority="LT">Later</string>
@@ -83,7 +66,7 @@
     <color name="hwid_auth_button_color_text_black">#000000</color>
     <color name="hwid_auth_button_color_text_white">#FFFFFF</color>
     <color name="hwid_auth_button_color_white">#FFFFFF</color>
-    <string name="hwid_huawei_login_button_text" priority="LT">Log in with Huawei</string>
+    <string name="hwid_huawei_login_button_text" priority="LT">Sign in with HUAWEI ID</string>
     <declare-styleable name="HuaweiIdAuthButton">
         <attr format="enum" name="hwid_color_policy">
             <enum name="hwid_color_policy_blue" value="0"/>
@@ -105,4 +88,20 @@
             <enum name="hwid_corner_radius_small" value="-3"/>
         </attr>
     </declare-styleable>
+
+    <string name="c_buoycircle_auto_hide_notice" priority="LT">Drag here to hide</string>
+    <string name="c_buoycircle_cancel" priority="LT">CANCEL</string>
+    <string name="c_buoycircle_confirm" priority="LT">OK</string>
+    <string name="c_buoycircle_floatwindow_click_fail_toast" priority="translator">Enable Secondary launch for AppGallery in Phone Manager (Optimizer) or Settings.</string>
+    <string name="c_buoycircle_hide_guide_btn_cancel" priority="LT">CANCEL</string>
+    <string name="c_buoycircle_hide_guide_btn_confirm" priority="LT">HIDE</string>
+    <string name="c_buoycircle_hide_guide_content_nosensor" priority="LT">After balloons are hidden, you will need to relaunch the app to show them again.</string>
+    <string name="c_buoycircle_hide_guide_content_sensor" priority="LT">After balloons are hidden, flip your device to show them again.</string>
+    <string name="c_buoycircle_hide_guide_noremind" priority="LT">Don\'t remind me again</string>
+    <string name="c_buoycircle_hide_guide_title" priority="LT">Hide balloons</string>
+    <string name="c_buoycircle_install" priority="LT">INSTALL</string>
+    <string name="hms_game_achievement_finish_notice" priority="LT">%1$s unlocked</string>
+    <string name="hms_game_check_update_failed_content" priority="LT">Unable to access. This service requires the latest version of AppAssistant.</string>
+    <string name="hms_game_check_update_success_content" priority="LT">To use this service, install the latest version of AppAssistant (%1$s MB).</string>
+    <string name="hms_game_login_notice" priority="LT">Welcome %1$s</string>
 </resources>

@@ -1,42 +1,150 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.magata.huaweisdk">
 
-    <uses-permission android:name="com.huawei.hwid.permission.gameservice.archive.access.provider" />
     <!-- HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- HMS-SDK引导升级HMS功能，保存下载的升级包需要SD卡写权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 应用市场9.0版本必须使用该权限获取用户的服务地 -->
     <uses-permission android:name="com.huawei.appmarket.service.commondata.permission.GET_COMMON_DATA" />
-    <!-- HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.huawei.hwid.permission.gameservice.archive.access.provider" />
+
+    <!--
+    <queries>
+        <intent>
+            <action android:name="com.apptouch.intent.action.update_hms" />
+        </intent>
+        <intent>
+            <action android:name="com.huawei.appmarket.intent.action.AppDetail" />
+        </intent>
+        <intent>
+            <action android:name="com.huawei.hms.core.aidlservice" />
+        </intent>
+        <intent>
+            <action android:name="com.huawei.hms.core" />
+        </intent>
+        <package android:name="com.hisilicon.android.hiRMService" />
+    </queries> -->
     <application
         >
         <meta-data
+            android:name="com.huawei.hms.min_api_level:apptouch:apptouch"
+            android:value="1" />
+
+        <provider
+            android:name="com.huawei.agconnect.core.provider.AGConnectInitializeProvider"
+            android:authorities="${applicationId}.AGCInitializeProvider"
+            android:exported="false" />
+
+        <service
+            android:name="com.huawei.agconnect.core.ServiceDiscovery"
+            android:exported="false" />
+
+        <meta-data
+            android:name="availableLoaded"
+            android:value="yes" />
+
+        <provider
+            android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="${applicationId}.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+        </provider>
+        <!-- 为后续统计第三方app集成了哪些Kit，因此需要Kit在自己的AndroidManifest.xml文件中定义业务标签元数据 -->
+        <meta-data
+            android:name="com.huawei.hms.client.service.name:base"
+            android:value="base:6.1.0.302" />
+
+        <!-- SDK依赖的HMSCore的最低api level元数据 -->
+        <meta-data
+            android:name="com.huawei.hms.min_api_level:base:hmscore"
+            android:value="1" />
+
+        <provider
+            android:name="com.huawei.hms.device.provider.CheckHmsProvider"
+            android:authorities="${applicationId}.hms.device.validate.spoofprovider"
+            android:exported="false"
+            android:grantUriPermissions="false" />
+
+        <activity
+            android:name="com.huawei.hms.activity.BridgeActivity"
+            android:configChanges="orientation|locale|layoutDirection|fontScale|screenSize|smallestScreenSize|screenLayout|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="behind"
+            android:theme="@style/Base_Translucent" >
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+        <activity
+            android:name="com.huawei.hms.activity.EnableServiceActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar" />
+        </activity>
+        <activity
+            android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+        <provider
+            android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
+            android:authorities="${applicationId}.updateSdk.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <activity
+            android:name="com.huawei.hms.hwid.internal.ui.activity.HwIdSignInHubActivity"
+            android:configChanges="fontScale|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.huawei.hms.account.internal.ui.activity.AccountSignInHubActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <!-- 切记同步修改 HuaweiIdAuthInternalConstant.HMS_SDK_VERSION -->
+        <meta-data
+            android:name="com.huawei.hms.client.service.name:hwid"
+            android:value="hwid:6.1.0.300" />
+        <meta-data
+            android:name="com.huawei.hms.min_api_level:hwid:hwid"
+            android:value="1" />
+
+        <!-- 5.3.0 独立授权依赖的api_level为11 -->
+        <!-- 5.3.0 setCarrierId依赖的api_level为13 -->
+        <meta-data
+            android:name="com.huawei.hms.min_api_level:hwid:account"
+            android:value="13" />
+
+        <meta-data
+            android:name="com.huawei.hms.client.service.name:iap"
+            android:value="iap:6.1.0.300" />
+
+        <meta-data
             android:name="com.huawei.hms.client.service.name:game"
-            android:value="game:5.0.1.302" />
-        <meta-data
-            android:name="com.huawei.hms.jos.versioncode"
-            android:value="50001302" />
-
-        <!-- 声明kit服务的API Level -->
-        <meta-data
-            android:name="com.huawei.hms.kit.api_level:game"
-            android:value="1" />
-
-        <!-- 声明kit服务的API Level -->
-        <meta-data
-            android:name="com.huawei.hms.kit.api_level:jos"
-            android:value="1" />
-
-        <!-- 声明kit服务的API Level -->
-        <meta-data
-            android:name="com.huawei.hms.kit.api_level:core"
-            android:value="1" />
+            android:value="game:6.1.0.301" />
 
         <service
             android:name="com.huawei.hms.jos.games.service.GameService"
@@ -64,112 +172,12 @@
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
         </activity>
 
-        <provider
-            android:name="com.huawei.agconnect.core.provider.AGConnectInitializeProvider"
-            android:authorities="${applicationId}.AGCInitializeProvider"
-            android:exported="false" />
-
-        <service
-            android:name="com.huawei.agconnect.core.ServiceDiscovery"
-            android:exported="false" />
-
-        <!-- 用于判断是否集成了本lib -->
         <meta-data
-            android:name="availableLoaded"
-            android:value="yes" />
-
-        <provider
-            android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="${applicationId}.hms.update.provider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-        </provider>
-
-        <!--
-        为后续统计第三方app集成了哪些Kit，因此需要Kit在自己的AndroidManifest.xml文件中定义业务标签元数据，
-        流水线打包时会替换成HMSVER对应的版本号，不要手动修改
-        -->
-        <meta-data
-            android:name="com.huawei.hms.client.service.name:base"
-            android:value="base:5.0.5.300" />
-
-        <!-- SDK依赖的HMSCore的最低api level元数据 -->
-        <meta-data
-            android:name="com.huawei.hms.min_api_level:base:hmscore"
-            android:value="1" />
-
-        <activity
-            android:name="com.huawei.hms.activity.BridgeActivity"
-            android:configChanges="orientation|locale|layoutDirection|fontScale|screenSize|smallestScreenSize|screenLayout|uiMode"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent" >
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
-        <activity
-            android:name="com.huawei.hms.activity.EnableServiceActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
-            android:exported="false" >
-        </activity>
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <activity
-            android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar" />
-        </activity>
-        <activity
-            android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
-
-        <provider
-            android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
-            android:authorities="${applicationId}.updateSdk.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-        </provider>
-
-        <activity
-            android:name="com.huawei.hms.hwid.internal.ui.activity.HwIdSignInHubActivity"
-            android:configChanges="fontScale|uiMode"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.huawei.hms.account.internal.ui.activity.AccountSignInHubActivity"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-
-        <!-- 切记同步修改 HuaweiIdAuthInternalConstant.HMS_SDK_VERSION -->
-        <meta-data
-            android:name="com.huawei.hms.client.service.name:hwid"
-            android:value="hwid:5.0.5.300" />
-        <meta-data
-            android:name="com.huawei.hms.min_api_level:hwid:hwid"
-            android:value="1" />
+            android:name="com.huawei.hms.jos.versioncode"
+            android:value="60100301" />
 
         <meta-data
-            android:name="com.huawei.hms.client.service.name:iap"
-            android:value="iap:5.0.4.301" />
+        android:name="com.huawei.hms.client.channel.androidMarket"
+        android:value="false" />
     </application>
 </manifest>
